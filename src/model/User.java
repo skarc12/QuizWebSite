@@ -1,4 +1,6 @@
-package Servlets;
+package model;
+
+import java.util.ArrayList;
 
 public class User {
 	String firstname;
@@ -6,6 +8,7 @@ public class User {
 	String email;
 	String username;
 	String password;
+	ArrayList <User> friends;
 	
 	public User(String firstname, String lastname, String email,
 			String username, String password) {
@@ -15,6 +18,27 @@ public class User {
 		this.email = email;
 		this.username = username;
 		this.password = password;
+		friends = new ArrayList<>();
+	}
+	public User(String firstname, String lastname, String email,
+			String username, String password, ArrayList<User> friends) {
+		super();
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.friends = friends;
+	}
+	
+	public void addFriend(User user){
+		friends.add(user);
+	}
+	public ArrayList<User> getFriends() {
+		return friends;
+	}
+	public void setFriends(ArrayList<User> friends) {
+		this.friends = friends;
 	}
 	public String getFirstname() {
 		return firstname;
@@ -22,6 +46,7 @@ public class User {
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
+	
 	public String getLastname() {
 		return lastname;
 	}
