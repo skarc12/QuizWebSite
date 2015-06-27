@@ -1,0 +1,85 @@
+body{
+	background: url(../img/good.png) ;
+}
+.hello{
+	position: fixed;
+	top:70px;
+	width: 180px;
+	height: 90px;
+}
+h2{
+	font-family: Sans-serif;
+}
+.quiz{
+
+	width: 140px;
+	height: 50px;
+	margin-left: 30px;
+}
+.mini{
+	position: fixed;
+	top:127px;
+	left: 42px;
+}
+.search-box{
+	position: absolute;
+	top: 15px;
+	margin-left:185px;
+	margin-right: 245px;
+}
+.menu{
+	position: fixed;
+	left: 500px;
+}
+hr{
+	margin-top: 10px;
+}
+.link{
+	position: fixed;
+	top:17px;
+	margin-left: 660px;
+}
+a{
+	text-decoration: none;
+	color: black;
+}
+p{
+	position: fixed;
+	font-size: 20px;
+	top:15px;
+	margin-left: 800px;
+}
+.out{
+	margin-left: 960px;
+}
+.user{
+	position: fixed;
+	top:1px;
+	width: 65px;
+	height: 65px;
+	margin-left: 1050px;
+	border-radius: 50px;
+}
+#search input[type="text"] {
+	background: #FFFF85;
+	outline: none;
+	border: 0 none;
+	font: italic 20px Arial,Helvetica,Sans-serif;
+	width: 700px;
+	padding: 9px 2px 8px 18px;
+	text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+	box-shadow: 0 px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+	-webkit-transition: all 0.7s ease 0s;
+	-moz-transition: all 0.7s ease 0s;
+	-o-transition: all 0.7s ease 0s;
+	transition: all 0.7s ease 0s;
+	
+}
+#search input[type="text"]:focus {
+	background:#dceefc ;
+	color: #6a6f75;
+	width: 700px;
+	
+}
