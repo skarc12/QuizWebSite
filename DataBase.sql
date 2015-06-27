@@ -1,18 +1,21 @@
-
+drop table if exists users;
 create table users(
 	ID int auto_increment not null primary key,
 	first_name varchar(100),
 	last_name varchar(100),
 	username varchar(100),
 	email varchar(100),
-	password varchar(100)
+	password varchar(100),
+    unique key (username)
 );
-alter table users add unique key (username);
+
+drop table if exists categories;
 
 create table categories(
 	ID int auto_increment not null primary key,
 	type varchar(30)
 );
+drop table if exists quizes;
 
 create table quizes(
 	ID int not null auto_increment primary key,
@@ -28,7 +31,7 @@ create table quizes(
 	foreign key (creatorID) references users (ID),
 	foreign key (categoryID) references categories(ID)
 );
-
+drop table if exists take_quize;
 create table take_quize(
 	ID int auto_increment primary key,
 	quizID int,
@@ -38,7 +41,7 @@ create table take_quize(
 	foreign key (userID) references users (ID),
 	foreign key (quizID)  references quizes(ID)
 );
-
+drop table if exists multiple_choice;
 create table multiple_choice(
 	ID int auto_increment not null primary key,
 	question varchar(500),
@@ -51,7 +54,7 @@ create table multiple_choice(
 	score int,
 	foreign key (quizID) references quizes(ID)
 );
-
+drop table if exists picture_quiz;
 create table picture_quiz(
 	ID int auto_increment not null primary key,
 	url varchar(500),
@@ -60,6 +63,7 @@ create table picture_quiz(
 	quizID int,
 	foreign key (quizID) references quizes(ID)
 );
+drop table if exists question_answer;
 create table question_answer(
 	ID int auto_increment not null primary key,
 	question varchar(500),
@@ -68,7 +72,7 @@ create table question_answer(
 	quizID int,
 	foreign key (quizID) references quizes(ID)
 );
-
+drop table if exists fill_the_gaps;
 create table fill_the_gaps(
 	ID int auto_increment not null primary key,
 	question varchar(500),
@@ -78,7 +82,7 @@ create table fill_the_gaps(
 	quizID int,
 	foreign key (quizID) references quizes(ID)
 );
-
+drop table if exists friends;
 create table friends(
 	ID int not null auto_increment primary key,
 	userID int,
@@ -87,7 +91,7 @@ create table friends(
 	foreign key (friendID) references users(ID)
 );
 
-
+drop table if exists friendRequest;
 create table friendRequest(
 	ID int auto_increment not null primary key,
 	fromID int,
@@ -97,16 +101,17 @@ create table friendRequest(
 	foreign key (toID) references users(ID)
 
 );
-
+drop table if exists messages;
 create table messages(
 	ID int auto_increment not null primary key,
 	fromID int,
 	toID int,
 	msg text,
+    seen boolean,
 	foreign key (fromID) references users(ID),
 	foreign key (toID) references users(ID)
 );
-
+drop table if exists challenge;
 create table challenge(
 	ID int auto_increment primary key,
 	fromID int,
