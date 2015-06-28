@@ -51,9 +51,9 @@ public class registrationServlet extends HttpServlet {
 		String username = request.getParameter("UserName");
 		String password = request.getParameter("Password");
 		DBHelper a =  new DBHelper();
-		User user = a.findUser(username);
-		if(user == null){
-			user = a.addUser(name, lastname, username, email, password);
+		boolean bol = a.exists(username);
+		if(bol == false){
+			User user = a.addUser(name, lastname, username, email, password);
 			request.getSession().setAttribute("user", user);
 			response.sendRedirect("home.jsp");
 		}else{

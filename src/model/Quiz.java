@@ -12,8 +12,7 @@ public class Quiz {
 	boolean random;
 	Date date;
 	ArrayList <Question> questions;
-	String category;
-	
+	User ownes;
 	public Quiz(int id, String quizName, Date date) {
 		super();
 		ID = id;
@@ -21,17 +20,15 @@ public class Quiz {
 		this.date = date;
 		questions = new ArrayList<>();
 	}
+
+	public User getOwnes() {
+		return ownes;
+	}
+
+	public void setOwnes(User ownes) {
+		this.ownes = ownes;
+	}
 	
-	public String getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-
 	public ArrayList <Question> getQuestions() {
 		return questions;
 	}

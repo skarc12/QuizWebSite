@@ -23,22 +23,27 @@ else{
 			<!--<img class="hello" src="./img/gipi.gif">
 			<img class = "mini" src="./img/mini.png">-->
 			<div class = "headerMenu" size = "60">
-					<div class = "search-box">
+				<div class = "search-box">
 
-						<form action="search.php" method = "GET" id = "search">
-							<input type = "text" name="q" size="60" placeholder="Search ...">
-						</form>
-						<a href="https://instagram.com/"><img class = "link" src="./img/2.png"></a>
-						<p class="out"><a href="SignOutServlet">Sing Out</a></p>
-						<p><a href="userPage.html"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
-						<a href="userPage.html"><img class = "user" src="./img/user.jpg"></a>
-						
-					</div>
+					<form action="search.php" method = "GET" id = "search">
+						<input type = "text" name="q" size="60" placeholder="Search ...">
+					</form>
+					<a href="https://instagram.com/"><img class = "link" src="./img/2.png"></a>
+					<p class="out"><a href="SignOutServlet">Sing Out</a></p>
+					<p><a href="userPage.html"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
+					<a href="userPage.html"><img class = "user" src="./img/user.jpg"></a>
+					
 				</div>
 			</div>
 
 			<h1><a href ="createQuiz.jsp">Create Quize</a></h1>
-		</table>
+			<h4 class="chapt">Messages</h4>
+			<h4 class="chapt">Chalanges</h4>
+			<h4 class="chapt">Friend Requests</h4>
+			<h4 class="chapt">Recent Quiz Activities</h4>
+			<h4 class="chapt">My Quizzes</h4></span>
+			<h4 class="chapt">Most Popular Quizzes</h4></span>
+			<h4 class="chapt">Recently Created Quizzes</h4></span>
 	</body>
 <%} %>
 </html>
