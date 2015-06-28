@@ -1,3 +1,5 @@
+SET SQL_SAFE_UPDATES = 0;
+
 drop table if exists users;
 create table users(
 	ID int auto_increment not null primary key,
@@ -21,7 +23,6 @@ create table quizes(
 	ID int not null auto_increment primary key,
 	creatorID int,
 	categoryID int,
-	url varchar(100),
 	quiz_name varchar(100),
 	description varchar(100),
 	isOnePage boolean,
@@ -31,6 +32,7 @@ create table quizes(
 	foreign key (creatorID) references users (ID),
 	foreign key (categoryID) references categories(ID)
 );
+
 drop table if exists take_quize;
 create table take_quize(
 	ID int auto_increment primary key,
@@ -52,8 +54,11 @@ create table multiple_choice(
 	answer4 varchar(100),
 	correct_answer varchar(100),
 	score int,
+	questionID int,
+	foreign key (questionID) references questions(ID),
 	foreign key (quizID) references quizes(ID)
 );
+
 drop table if exists picture_quiz;
 create table picture_quiz(
 	ID int auto_increment not null primary key,
@@ -61,8 +66,13 @@ create table picture_quiz(
 	answer varchar(90),
 	score int,
 	quizID int,
+	questionID int,
+	foreign key (questionID) references questions(ID),
 	foreign key (quizID) references quizes(ID)
 );
+
+
+
 drop table if exists question_answer;
 create table question_answer(
 	ID int auto_increment not null primary key,
@@ -70,8 +80,13 @@ create table question_answer(
 	answer varchar(100),
 	score int,
 	quizID int,
+	questionID int,
+	foreign key (questionID) references questions(ID),
 	foreign key (quizID) references quizes(ID)
 );
+
+
+
 drop table if exists fill_the_gaps;
 create table fill_the_gaps(
 	ID int auto_increment not null primary key,
@@ -80,8 +95,13 @@ create table fill_the_gaps(
 	num_of_answers int,
 	score int,
 	quizID int,
+	questionID int,
+	foreign key (questionID) references questions(ID),
 	foreign key (quizID) references quizes(ID)
 );
+
+
+
 drop table if exists friends;
 create table friends(
 	ID int not null auto_increment primary key,
@@ -124,6 +144,21 @@ create table challenge(
 	challenge_status boolean,
 	foreign key (fromID) references users(ID),
 	foreign key (toID) references users(ID),
+	foreign key(quizID) references quizes(ID)
+	
+);
+drop table if exists question_category;
+create table question_category(
+	ID int auto_increment primary key,
+	question_type varchar(100)
+);
+
+drop table if exists questions;
+create table questions(
+	ID int auto_increment primary key,
+	question_categoryID int,
+	quizID int,
+	foreign key (question_categoryID) references question_category(ID),
 	foreign key(quizID) references quizes(ID)
 	
 );

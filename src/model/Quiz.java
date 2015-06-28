@@ -5,30 +5,26 @@ import java.sql.Date;
 public class Quiz {
 	String quizName;
 	String description;
-	String url;
 	boolean isOnePage;
 	boolean feedback;
 	boolean random;
 	Date date;
 	Question[] questions;
-	String category;
+	User ownes;
 	
+	public User getOwnes() {
+		return ownes;
+	}
+
+	public void setOwnes(User ownes) {
+		this.ownes = ownes;
+	}
+
 	public Quiz(String quizName, String url, Date date) {
 		super();
 		this.quizName = quizName;
-		this.url = url;
 		this.date = date;
 	}
-	
-	public String getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
 
 	public Question[] getQuestions() {
 		return questions;
@@ -49,12 +45,6 @@ public class Quiz {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
 	}
 	public boolean isOnePage() {
 		return isOnePage;

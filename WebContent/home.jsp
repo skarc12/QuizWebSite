@@ -37,7 +37,14 @@ else{
 				</div>
 			</div>
 
-			<h1><a href ="createQuiz.html">Create Quize</a></h1>
+			<h4><a href ="createQuiz.html">Create Quize</a></h4>
+			<h4 class="chapt">Messages</h4>
+			<h4 class="chapt">Chalanges</h4>
+			<h4 class="chapt">Friend Requests</h4>
+			<h4 class="chapt">Recent Quiz Activities</h4>
+			<h4 class="chapt">My Quizzes</h4></span>
+			<h4 class="chapt">Most Popular Quizzes</h4></span>
+			<h4 class="chapt">Recently Created Quizzes</h4></span>
 		</table>
 	</body>
 <%} %>
