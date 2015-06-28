@@ -7,7 +7,7 @@ public class MultipleChoiceQuestion extends Question {
 	String answer3;
 	String answer4;
 	String correctAnswer;
-	int point;
+	int score;
 
 	public MultipleChoiceQuestion(String question, String answer1, String answer2, 
 			String answer3, String answer4, String correctAnswer, int point) {
@@ -18,7 +18,7 @@ public class MultipleChoiceQuestion extends Question {
 		this.answer3 = answer3;
 		this.answer4 = answer4;
 		this.correctAnswer = correctAnswer;
-		this.point = point;
+		this.score = point;
 	}
 
 	public String getQuestion() {
@@ -69,12 +69,12 @@ public class MultipleChoiceQuestion extends Question {
 		this.correctAnswer = correctAnswer;
 	}
 
-	public int getPoint() {
-		return point;
+	public int getScore() {
+		return score;
 	}
 
-	public void setPoint(int point) {
-		this.point = point;
+	public void setScore(int point) {
+		this.score = point;
 	}
 	
 

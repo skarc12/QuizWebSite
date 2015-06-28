@@ -50,7 +50,7 @@ public class registrationServlet extends HttpServlet {
 		String email = request.getParameter("Mail");
 		String username = request.getParameter("UserName");
 		String password = request.getParameter("Password");
-		UserManager a =  new UserManager();
+		DBHelper a =  new DBHelper();
 		User user = a.findUser(username);
 		if(user == null){
 			user = a.addUser(name, lastname, username, email, password);

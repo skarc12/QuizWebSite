@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import model.Message;
+import model.Quiz;
 import model.User;
 
 
 
-public class UserManager {
+public class DBHelper {
 	public User addUser(String name, String lastname, String username,
 			String email, String password){
 		
@@ -42,7 +44,6 @@ public class UserManager {
 		
 		return user;
 	}
-	
 	public User findUser(String username){
 		Connection con;
 		try {
@@ -79,4 +80,28 @@ public class UserManager {
 		
 		
 	}
+	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma gaaketa
+	public  Quiz[] getPopularQuizes(){
+		
+		return null;
+	}
+	//aq unda daabrunos tavisi sheqmnili quizebi
+	public Quiz[] getRecentlyCreatedQuizes(){
+		
+		return null;
+	}
+	//aq unda daabrunot tavisi gaketebuli quizebi
+	public Quiz[] getRecentQuizActivities(){
+		
+		return null;
+	}
+	//aq unda daabrunos tavisi sheqmnili quizebi, romelic vigacam gaiara bolos
+	public Quiz[] getUserPlayedQuizes(){
+		return null;
+	}
+	//aq unda daabrunos message, romelic ger ar waukitxavs.. 
+	public Message[] getUserUnreadMessages(){
+		return null;
+	}
+	
 }
