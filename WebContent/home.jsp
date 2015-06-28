@@ -36,7 +36,7 @@ else{
 					</div>
 				</div>
 			</div>
-		
+			<h1><a href ="createQuiz.html">Create Quize</a></h1>
 
 			
 		</table>

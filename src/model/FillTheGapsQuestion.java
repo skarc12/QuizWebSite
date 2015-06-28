@@ -2,7 +2,7 @@ package model;
 
 public class FillTheGapsQuestion extends Question {
 	String question;
-	String[] choices;
+	String[] answers;
 	int score;
 
 	public FillTheGapsQuestion() {
@@ -10,10 +10,10 @@ public class FillTheGapsQuestion extends Question {
 	}
 
 	public FillTheGapsQuestion(QuestionType type, String question,
-			String[] choices, int score) {
+			String[] answers, int score) {
 		this();
 		this.question = question;
-		this.choices = choices;
+		this.answers = answers;
 		this.score = score;
 	}
 
@@ -25,12 +25,12 @@ public class FillTheGapsQuestion extends Question {
 		this.question = question;
 	}
 
-	public String[] getChoices() {
-		return choices;
+	public String[] getAnswers() {
+		return answers;
 	}
 
-	public void setChoices(String[] choices) {
-		this.choices = choices;
+	public void setAnswers(String[] answers) {
+		this.answers = answers;
 	}
 
 	public int getScore() {
