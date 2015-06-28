@@ -31,6 +31,10 @@ public class User {
 		this.friends = friends;
 	}
 	
+	public String getURL(){
+		return "users/"+username;
+	}
+	
 	public void addFriend(User user){
 		friends.add(user);
 	}

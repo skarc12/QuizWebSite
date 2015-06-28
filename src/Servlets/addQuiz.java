@@ -17,6 +17,7 @@ import model.PictureQuizQuestion;
 import model.QuestinAnswerQuestion;
 import model.Question;
 import model.Quiz;
+import model.User;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -100,14 +101,17 @@ public class addQuiz extends HttpServlet {
 				for(int k=0; k<answers.length; k++){
 					answers[k]=jsonAnswers.get(i).getAsString();
 				}
+				System.out.println(answers);
 				FillTheGapsQuestion q = new FillTheGapsQuestion(questionText, answers, 1);
 				questionsList.add(q);
 			}
 		}
+		quizObj.setOwnes((User)request.getSession().getAttribute("user"));
 		//DBHeler.addQuiz(quizObj);
 		System.out.println("name: "+quizObj.getQuizName());
 		System.out.println("random: "+quizObj.isRandom());
-		response.getOutputStream().print("home.jsp");
+		request.getSession().setAttribute("quiz", quizObj);
+		response.getOutputStream().print("quizPage.jsp");
 	}
 	
 	static String readAll(InputStream in){

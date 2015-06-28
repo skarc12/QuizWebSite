@@ -36,7 +36,7 @@ else{
 				</div>
 			</div>
 
-			<h1><a href ="createQuiz.jsp">Create Quize</a></h1>
+			<h1><a href ="creatQuiz.jsp">Create Quize</a></h1>
 			<h4 class="chapt">Messages</h4>
 			<h4 class="chapt">Chalanges</h4>
 			<h4 class="chapt">Friend Requests</h4>

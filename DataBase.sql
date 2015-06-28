@@ -33,6 +33,23 @@ create table quizes(
 	foreign key (categoryID) references categories(ID)
 );
 
+
+drop table if exists question_category;
+create table question_category(
+	ID int auto_increment primary key,
+	question_type varchar(100)
+);
+
+drop table if exists questions;
+create table questions(
+	ID int auto_increment primary key,
+	question_categoryID int,
+	quizID int,
+	foreign key (question_categoryID) references question_category(ID),
+	foreign key(quizID) references quizes(ID)
+	
+);
+
 drop table if exists take_quize;
 create table take_quize(
 	ID int auto_increment primary key,
@@ -144,21 +161,6 @@ create table challenge(
 	challenge_status boolean,
 	foreign key (fromID) references users(ID),
 	foreign key (toID) references users(ID),
-	foreign key(quizID) references quizes(ID)
-	
-);
-drop table if exists question_category;
-create table question_category(
-	ID int auto_increment primary key,
-	question_type varchar(100)
-);
-
-drop table if exists questions;
-create table questions(
-	ID int auto_increment primary key,
-	question_categoryID int,
-	quizID int,
-	foreign key (question_categoryID) references question_category(ID),
 	foreign key(quizID) references quizes(ID)
 	
 );

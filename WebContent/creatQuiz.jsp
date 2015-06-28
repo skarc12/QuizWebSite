@@ -153,8 +153,8 @@ $('#addQuiz').click(function(){
 					var obj = {category :4 }
 					obj.question=$(question).find(".questionText").val();
 					obj.answers = [];
-					for(var k=1; k<=$("ftgNumberQuantity").val(); k++){
-						obj.answers.push($(question).find("ftgAnswer"+k).val());
+					for(var k=1; k<=$(question).find(".ftgNumberQuantity").val(); k++){
+						obj.answers.push($(question).find(".ftgAnswer"+k).val());
 					}
 					console.log(obj);
 					if(obj.question == ""){
@@ -166,7 +166,6 @@ $('#addQuiz').click(function(){
 							alert("fill all fields of question "+(i+1));
 							return;
 						}
-							
 					}
 					quiz.questions.push(obj);
 					break;
