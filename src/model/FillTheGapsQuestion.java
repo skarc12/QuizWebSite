@@ -9,7 +9,7 @@ public class FillTheGapsQuestion extends Question {
 		super(Question.QuestionType.FILL_THE_GAPS);
 	}
 
-	public FillTheGapsQuestion(QuestionType type, String question,
+	public FillTheGapsQuestion(String question,
 			String[] answers, int score) {
 		this();
 		this.question = question;

@@ -8,9 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.mysql.fabric.xmlrpc.base.Array;
+
+import model.FillTheGapsQuestion;
 import model.Message;
+import model.MultipleChoiceQuestion;
+import model.PictureQuizQuestion;
+import model.QuestinAnswerQuestion;
 import model.Question;
+import model.Question.QuestionType;
 import model.Quiz;
 import model.User;
 
@@ -138,11 +147,12 @@ public class DBHelper {
 	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma gaaketa
 	public  Quiz[] getPopularQuizes(){
 		Connection con;
+		Quiz[] quiz = null;
 		try {
 			con = DBConnection.initConnection();
 			CallableStatement stm = con.prepareCall("{call getPopularQuizes()}");
 			ResultSet result = stm.executeQuery();
-			
+			quiz = makeQuizObject(result);
 			stm.close();
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | SQLException e) {
@@ -150,7 +160,7 @@ public class DBHelper {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return quiz;
 	}
 	//aq unda daabrunos tavisi sheqmnili quizebi
 	public Quiz[] getRecentlyCreatedQuizes(){
@@ -171,7 +181,7 @@ public class DBHelper {
 		return null;
 	}
 	private Quiz[] makeQuizObject(ResultSet res){
-		Quiz[] result = null;
+		List<Quiz> questslist = new ArrayList<Quiz>();
 		try {
 			while(res.next()){
 				int userID = res.getInt("creatorID");
@@ -183,14 +193,102 @@ public class DBHelper {
 				boolean feedback = res.getBoolean("feedback");
 				boolean random = res.getBoolean("random");
 				Date date = res.getDate("quiz_date");
-				Question [] quests;
+				Question [] quests = getQuestions(id);
+				Quiz quiz = new Quiz(name, date);
+				quiz.setDescription(description);
+				quiz.setFeedback(feedback);
+				quiz.setOnePage(isOnePage);
+				quiz.setOwnes(user);
+				quiz.setQuestions(quests);
+				quiz.setRandom(random);
+				questslist.add(quiz);
 				
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return result;
+		Quiz[] result = new Quiz[questslist.size()];
+		return questslist.toArray(result);
+	}
+	private Question[] getQuestions(int id) throws Exception{
+		List<Question> quests = new ArrayList<Question>();
+		Connection con = DBConnection.initConnection();
+		CallableStatement stm = con.prepareCall("{call getQuestionIDs(?)}");
+		stm.setInt(1,id);
+		ResultSet set = stm.executeQuery();
+		while(set.next()){
+			int questionID = set.getInt("ID");
+			int categoryID = set.getInt("question_categoryID");
+			Question quest = getQuestion(questionID,categoryID);
+			quests.add(quest);
+		}
+		con.close();
+		stm.close();
+		Question [] q = new Question [quests.size()];
+		return quests.toArray(q);
+	}
+	private Question getQuestion(int questionID, int categoryID) throws Exception {
+		Connection con = DBConnection.initConnection();
+		CallableStatement stm = con.prepareCall("{call getQuestion(?,?)}");
+		stm.setInt(1,questionID);
+		stm.setInt(2,categoryID);
+		ResultSet set = stm.executeQuery();
+		Question quest = null;
+		while(set.next()){
+			if(categoryID == 1){
+				quest = initializeFillTheGaps(set, categoryID);
+			}else if(categoryID ==2){
+				quest = initializeMulChoice(set, categoryID);
+			}else if(categoryID == 3){
+				quest = initializePictureQuiz(set, categoryID);
+			}else if(categoryID == 4){
+				quest = initializeSimpleQuiz(set, categoryID);
+			}
+		}
+		return quest;
+	}
+	private Question initializeSimpleQuiz(ResultSet set, int categoryID) throws SQLException {
+		String answer = set.getString("answer");
+		int score = set.getInt("score");
+		String questionText = set.getString("question");
+		Question question = new QuestinAnswerQuestion(questionText, answer, score);
+		return question;
+	}
+	private Question initializePictureQuiz(ResultSet set, int categoryID) throws SQLException {
+		String answer = set.getString("answer");
+		int score = set.getInt("score");
+		String url = set.getString("url");
+		Question question = new PictureQuizQuestion(url,answer,score);
+		return question;
+	}
+	private Question initializeMulChoice(ResultSet set, int categoryID) throws SQLException {
+		String corr_answer = set.getString("correct_answer");
+		int score = set.getInt("score");
+		String questionText = set.getString("question");
+		String ans1 = set.getString("answer1");
+		String ans2 = set.getString("answer2");
+		String ans3 = set.getString("answer3");
+		String ans4 = set.getString("answer4");
+		Question question = new MultipleChoiceQuestion(questionText, ans1, ans2, ans3, ans4, corr_answer, score);
+		return question;
+	}
+	private Question initializeFillTheGaps(ResultSet set, int categoryID) throws SQLException {
+		String answer = set.getString("answer");
+		int score = set.getInt("score");
+		String questionText = set.getString("question");
+		int numOfAnswers = set.getInt("num_of_answers");
+		List<String> a = new ArrayList<>();
+		String [] answers = new String[numOfAnswers];
+		int fromIndex = 0, endIndex = 0;
+		String ans;
+		while(numOfAnswers!=0){
+			endIndex=answer.indexOf("#", fromIndex);
+			a.add(answer.substring(fromIndex, endIndex+1));
+			fromIndex = endIndex;
+			numOfAnswers--;
+		}
+		Question question = new FillTheGapsQuestion(questionText, a.toArray(answers), score);
+		return question;
 	}
 	private User generateUser(int userID) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		User user = null;
@@ -206,6 +304,8 @@ public class DBHelper {
 			String password = set.getString("password");
 			user = new User(firstname, lastname, email, username, password);
 		}
+		con.close();
+		stm.close();
 		return user;
 	}
 	

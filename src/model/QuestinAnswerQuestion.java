@@ -8,7 +8,7 @@ public class QuestinAnswerQuestion extends Question {
 		super(Question.QuestionType.QUESTION_ANSWER);
 		
 	}
-	public QuestinAnswerQuestion(QuestionType type, String question,
+	public QuestinAnswerQuestion(String question,
 			String answer, int score) {
 		this();
 		this.question = question;

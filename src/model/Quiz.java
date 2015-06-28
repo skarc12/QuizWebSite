@@ -20,7 +20,7 @@ public class Quiz {
 		this.ownes = ownes;
 	}
 
-	public Quiz(String quizName, String url, Date date) {
+	public Quiz(String quizName, Date date) {
 		super();
 		this.quizName = quizName;
 		this.date = date;
