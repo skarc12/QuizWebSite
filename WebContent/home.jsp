@@ -7,7 +7,7 @@
 <% 
 HttpSession ses = request.getSession();
 
-User user = (User) ses.getValue("user");
+User user = (User) ses.getAttribute("user");
 if(user == null)
 	response.sendRedirect("index.html");
 else{
@@ -37,7 +37,7 @@ else{
 				</div>
 			</div>
 
-			<h1><a href ="createQuiz.html">Create Quize</a></h1>
+			<h1><a href ="createQuiz.jsp">Create Quize</a></h1>
 		</table>
 	</body>
 <%} %>

@@ -2,21 +2,14 @@ package model;
 
 public class MultipleChoiceQuestion extends Question {
 	String question;
-	String answer1;
-	String answer2;
-	String answer3;
-	String answer4;
+	String[] answers;
 	String correctAnswer;
 	int score;
 
-	public MultipleChoiceQuestion(String question, String answer1, String answer2, 
-			String answer3, String answer4, String correctAnswer, int point) {
+	public MultipleChoiceQuestion(String question, String[] answer, String correctAnswer, int point) {
 		super(Question.QuestionType.MULTIPLE_CHOICE);
 		this.question = question;
-		this.answer1 = answer1;
-		this.answer2 = answer2;
-		this.answer3 = answer3;
-		this.answer4 = answer4;
+		this.answers = answers;
 		this.correctAnswer = correctAnswer;
 		this.score = point;
 	}
@@ -30,37 +23,41 @@ public class MultipleChoiceQuestion extends Question {
 	}
 
 	public String getAnswer1() {
-		return answer1;
+		return answers[1];
 	}
 
 	public void setAnswer1(String answer1) {
-		this.answer1 = answer1;
+		this.answers[1] = answer1;
 	}
 
 	public String getAnswer2() {
-		return answer2;
+		return answers[2];
 	}
 
 	public void setAnswer2(String answer2) {
-		this.answer2 = answer2;
+		this.answers[2] = answer2;
 	}
 
 	public String getAnswer3() {
-		return answer3;
+		return answers[3];
 	}
 
 	public void setAnswer3(String answer3) {
-		this.answer3 = answer3;
+		this.answers[3] = answer3;
 	}
 
 	public String getAnswer4() {
-		return answer4;
+		return answers[4];
 	}
 
 	public void setAnswer4(String answer4) {
-		this.answer4 = answer4;
+		this.answers[4] = answer4;
 	}
 
+	public String[] getAnswers(){
+		return answers;
+	}
+	
 	public String getCorrectAnswer() {
 		return correctAnswer;
 	}
