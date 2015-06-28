@@ -21,6 +21,10 @@ public class Quiz {
 		questions = new ArrayList<>();
 	}
 
+	public Quiz(String quizName, Date date) {
+		this(-1, quizName, date);
+	}
+
 	public User getOwnes() {
 		return ownes;
 	}
@@ -28,7 +32,8 @@ public class Quiz {
 	public void setOwnes(User ownes) {
 		this.ownes = ownes;
 	}
-	
+
+
 	public ArrayList <Question> getQuestions() {
 		return questions;
 	}
