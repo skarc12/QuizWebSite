@@ -193,7 +193,7 @@ public class DBHelper {
 				boolean feedback = res.getBoolean("feedback");
 				boolean random = res.getBoolean("random");
 				Date date = res.getDate("quiz_date");
-				Question [] quests = getQuestions(id);
+				ArrayList<Question> quests = getQuestions(id);
 				Quiz quiz = new Quiz(name, date);
 				quiz.setDescription(description);
 				quiz.setFeedback(feedback);
@@ -210,8 +210,8 @@ public class DBHelper {
 		Quiz[] result = new Quiz[questslist.size()];
 		return questslist.toArray(result);
 	}
-	private Question[] getQuestions(int id) throws Exception{
-		List<Question> quests = new ArrayList<Question>();
+	private ArrayList<Question> getQuestions(int id) throws Exception{
+		ArrayList<Question> quests = new ArrayList<Question>();
 		Connection con = DBConnection.initConnection();
 		CallableStatement stm = con.prepareCall("{call getQuestionIDs(?)}");
 		stm.setInt(1,id);
@@ -224,8 +224,7 @@ public class DBHelper {
 		}
 		con.close();
 		stm.close();
-		Question [] q = new Question [quests.size()];
-		return quests.toArray(q);
+		return quests;
 	}
 	private Question getQuestion(int questionID, int categoryID) throws Exception {
 		Connection con = DBConnection.initConnection();
@@ -269,7 +268,7 @@ public class DBHelper {
 		String ans2 = set.getString("answer2");
 		String ans3 = set.getString("answer3");
 		String ans4 = set.getString("answer4");
-		Question question = new MultipleChoiceQuestion(questionText, ans1, ans2, ans3, ans4, corr_answer, score);
+		Question question = new MultipleChoiceQuestion(questionText, new String[]{ ans1, ans2, ans3, ans4}, corr_answer, score);
 		return question;
 	}
 	private Question initializeFillTheGaps(ResultSet set, int categoryID) throws SQLException {

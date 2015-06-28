@@ -1,17 +1,30 @@
 package model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Quiz {
+	int ID;
 	String quizName;
 	String description;
 	boolean isOnePage;
 	boolean feedback;
 	boolean random;
 	Date date;
-	Question[] questions;
+	ArrayList <Question> questions;
 	User ownes;
-	
+	public Quiz(int id, String quizName, Date date) {
+		super();
+		ID = id;
+		this.quizName = quizName;
+		this.date = date;
+		questions = new ArrayList<>();
+	}
+
+	public Quiz(String quizName, Date date) {
+		this(-1, quizName, date);
+	}
+
 	public User getOwnes() {
 		return ownes;
 	}
@@ -20,17 +33,12 @@ public class Quiz {
 		this.ownes = ownes;
 	}
 
-	public Quiz(String quizName, Date date) {
-		super();
-		this.quizName = quizName;
-		this.date = date;
-	}
 
-	public Question[] getQuestions() {
+	public ArrayList <Question> getQuestions() {
 		return questions;
 	}
 	
-	public void setQuestions(Question[] questions) {
+	public void setQuestions(ArrayList <Question> questions) {
 		this.questions = questions;
 	}
 	
@@ -45,6 +53,12 @@ public class Quiz {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public int getID() {
+		return ID;
+	}
+	public void setID(int id) {
+		ID = id;
 	}
 	public boolean isOnePage() {
 		return isOnePage;

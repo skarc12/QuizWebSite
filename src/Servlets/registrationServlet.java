@@ -54,7 +54,7 @@ public class registrationServlet extends HttpServlet {
 		boolean bol = a.exists(username);
 		if(bol == false){
 			User user = a.addUser(name, lastname, username, email, password);
-			request.getSession().putValue("user", user);
+			request.getSession().setAttribute("user", user);
 			response.sendRedirect("home.jsp");
 		}else{
 			response.sendRedirect("nameInUse.html");
