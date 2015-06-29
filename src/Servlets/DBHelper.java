@@ -13,7 +13,9 @@ import java.util.List;
 
 import com.mysql.fabric.xmlrpc.base.Array;
 
+import model.Challenge;
 import model.FillTheGapsQuestion;
+import model.FriendRequest;
 import model.Message;
 import model.MultipleChoiceQuestion;
 import model.PictureQuizQuestion;
@@ -178,7 +180,82 @@ public class DBHelper {
 			}
 		}
 	}
+	
+	
+	public static void markChallengeAsSeen(int challenge) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call changeSeenInChallenges(?)}");
+			stm.setInt(1, challenge);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	public static void markRequestAsSeen(int req) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call changeSeenInRequests(?)}");
+			stm.setInt(1, req);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
+	public static void sendChallenge(User user, String username, int score, int quizID, String msg){
+		int from = user.getUserID();
+		int to = findUser(username).getUserID();
+		Connection con = null;
+		CallableStatement stm = null;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call insertChallenge(?,?,?,?,?)}");
+			stm.setInt(1, from);
+			stm.setInt(2, to);
+			stm.setInt(3, quizID);
+			stm.setString(4, msg);
+			stm.setInt(5, score);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				stm.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma
 	// gaaketa
 	public static Quiz[] getPopularQuizes() {
@@ -311,6 +388,174 @@ public class DBHelper {
 		return friends;
 	}
 
+	public static Challenge[] getUnseenChallenges(User user) {
+		Challenge[] challenges = null;
+		List<Challenge> chall = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con
+					.prepareCall("{call getUnseenChallanges(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			Challenge ch = null;
+			User sender = null;
+			User reciever = null;
+			while (set.next()) {
+				int challengeID = set.getInt("ID");
+				int from = set.getInt("fromID");
+				int to = user.getUserID();
+				String text = set.getString("msg");
+				int quizID = set.getInt("quizID");
+				int firstScore = set.getInt("first_Score");
+				int secondScore = set.getInt("second_Score");
+				boolean seen = set.getBoolean("challenge_seen");
+				sender = generateUser(from);
+				reciever = generateUser(to);
+				ch = new Challenge(challengeID, sender, reciever, firstScore, secondScore, text, seen);
+				chall.add(ch);
+			}
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		challenges = new Challenge[chall.size()];
+		return chall.toArray(challenges);
+	}
+
+	public static FriendRequest[] getUnseenFriendRequest(User user) {
+		FriendRequest[] requests = null;
+		List<FriendRequest> req = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con
+					.prepareCall("{call getUnseenFriendRequests(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			FriendRequest r = null;
+			User sender = null;
+			User reciever = null;
+			while (set.next()) {
+				int id = set.getInt("ID");
+				int from = set.getInt("fromID");
+				int to = user.getUserID();
+				boolean seen = set.getBoolean("seen");
+				sender = generateUser(from);
+				reciever = generateUser(to);
+				r = new FriendRequest(id, sender, reciever, seen);
+				req.add(r);
+			}
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		requests = new FriendRequest[req.size()];
+		return req.toArray(requests);
+	}
+
+	/*
+	 * friend this two users.
+	 */
+	public static void addFriend(User user, String username) {
+		int first = user.getUserID();
+		int second = findUser(username).getUserID();
+		makeFriends(first,second);
+		sendRequest(first,second);
+		
+	}
+
+	private static void sendRequest(int first, int second) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call insertRequest(?,?)}");
+			stm.setInt(1, first);
+			stm.setInt(2, second);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+	}
+
+	private static void makeFriends(int first, int second) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call insertFriend(?,?)}");
+			stm.setInt(1, first);
+			stm.setInt(2, second);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+		
+	}
+
+	/*
+	 * unfriend two users.
+	 */
+	public static void unfriend(User user, String username) {
+		Connection con = null;
+		int second = findUser(username).getUserID();
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call unfriend(?,?)}");
+			stm.setInt(1, user.getUserID());
+			stm.setInt(2, second);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+
+	}
+
 	// aq unda daabrunos message, romelic ger ar waukitxavs..
 	public static Message[] getUserUnreadMessages(int userid) {
 		Message[] messages = null;
@@ -350,17 +595,20 @@ public class DBHelper {
 		messages = new Message[mess.size()];
 		return mess.toArray(messages);
 	}
+
 	/*
-	 * return all quizes that the user playd already, but not the array of quiz objects. it returns an array\
-	 * of object wich has quiz id, name and the point the user took on this quiz.
+	 * return all quizes that the user playd already, but not the array of quiz
+	 * objects. it returns an array\ of object wich has quiz id, name and the
+	 * point the user took on this quiz.
 	 */
-	public static QuizHandle [] getAllQuizes(User user){
+	public static QuizHandle[] getAllQuizes(User user) {
 		QuizHandle[] info = null;
 		List<QuizHandle> quizes = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
-			CallableStatement stm = con.prepareCall("{call getAllPlayedQuizes(?)}");
+			CallableStatement stm = con
+					.prepareCall("{call getAllPlayedQuizes(?)}");
 			stm.setInt(1, user.getUserID());
 			ResultSet set = stm.executeQuery();
 			QuizHandle quiz = null;
@@ -370,7 +618,7 @@ public class DBHelper {
 				int score = set.getInt("score");
 				quiz = new QuizHandle(id, name, score);
 				quizes.add(quiz);
-				
+
 			}
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | SQLException e) {
@@ -384,12 +632,12 @@ public class DBHelper {
 				e.printStackTrace();
 			}
 		}
-		info = new QuizHandle [quizes.size()];
+		info = new QuizHandle[quizes.size()];
 		return quizes.toArray(info);
 	}
-	
-	public static Quiz getQuizByID(int quizID){
-		Quiz result =null;
+
+	public static Quiz getQuizByID(int quizID) {
+		Quiz result = null;
 		Quiz[] quiz = null;
 		Connection con = null;
 		try {
@@ -398,7 +646,7 @@ public class DBHelper {
 			stm.setInt(1, quizID);
 			ResultSet set = stm.executeQuery();
 			quiz = makeQuizObject(set);
-			if(quiz.length==1){
+			if (quiz.length == 1) {
 				result = quiz[0];
 			}
 		} catch (ClassNotFoundException | InstantiationException
@@ -415,7 +663,7 @@ public class DBHelper {
 		}
 		return result;
 	}
-	
+
 	private static Quiz[] makeQuizObject(ResultSet res) {
 		List<Quiz> questslist = new ArrayList<Quiz>();
 		try {

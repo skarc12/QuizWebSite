@@ -1,27 +1,34 @@
 package model;
 
 public class Challenge {
+	int id;
 	User sender;
 	User reciever;
 	int firstScore;
 	int secondScore;
 	String msg;
 	boolean challengeSeen;
-	boolean challengeStatus;
 	
-	public Challenge(User sender, User reciever, int firstScore,
-			int secondScore, String msg, boolean challengeSeen,
-			boolean challengeStatus) {
+	public Challenge(int id,User sender, User reciever, int firstScore,
+			int secondScore, String msg, boolean challengeSeen) {
 		super();
+		this.id = id;
 		this.sender = sender;
 		this.reciever = reciever;
 		this.firstScore = firstScore;
 		this.secondScore = secondScore;
 		this.msg = msg;
 		this.challengeSeen = challengeSeen;
-		this.challengeStatus = challengeStatus;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public User getSender() {
 		return sender;
 	}
@@ -61,12 +68,6 @@ public class Challenge {
 	}
 	public void setChallengeSeen(boolean challengeSeen) {
 		this.challengeSeen = challengeSeen;
-	}
-	public boolean isChallengeStatus() {
-		return challengeStatus;
-	}
-	public void setChallengeStatus(boolean challengeStatus) {
-		this.challengeStatus = challengeStatus;
 	}
 	
 
