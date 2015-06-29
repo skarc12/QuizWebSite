@@ -1,6 +1,7 @@
 package model;
 
 public class Challenge {
+	int quizid;
 	int id;
 	User sender;
 	User reciever;
@@ -10,8 +11,9 @@ public class Challenge {
 	boolean challengeSeen;
 	
 	public Challenge(int id,User sender, User reciever, int firstScore,
-			int secondScore, String msg, boolean challengeSeen) {
+			int secondScore, String msg, boolean challengeSeen, int quizid) {
 		super();
+		this.quizid =quizid;
 		this.id = id;
 		this.sender = sender;
 		this.reciever = reciever;
@@ -19,6 +21,14 @@ public class Challenge {
 		this.secondScore = secondScore;
 		this.msg = msg;
 		this.challengeSeen = challengeSeen;
+	}
+	
+	public int getQuizid() {
+		return quizid;
+	}
+
+	public void setQuizid(int quizid) {
+		this.quizid = quizid;
 	}
 	
 	public int getId() {
