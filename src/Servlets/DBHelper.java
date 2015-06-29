@@ -475,7 +475,9 @@ public class DBHelper {
 	 */
 	public static void addFriend(User user, String username) {
 		int first = user.getUserID();
+		System.out.println(first);
 		int second = findUser(username).getUserID();
+		System.out.println(second);
 		makeFriends(first,second);
 		sendRequest(first,second);
 		
@@ -510,9 +512,13 @@ public class DBHelper {
 		try {
 			con = DBConnection.initConnection();
 			stm = con.prepareCall("{call insertFriend(?,?)}");
+			System.out.println(first);
+			System.out.println(second);
 			stm.setInt(1, first);
 			stm.setInt(2, second);
 			stm.execute();
+			System.out.println(first);
+			System.out.println(second);
 		} catch (SQLException | ClassNotFoundException | InstantiationException
 				| IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -810,4 +816,57 @@ public class DBHelper {
 		return user;
 	}
 
+
+
+
+	public static void addQuizIntoDatabase(Quiz quiz){
+		Date createTime = quiz.getDate();
+		String descrpt = quiz.getDescription();
+		User owner = quiz.getOwnes();
+		ArrayList<Question> questions = quiz.getQuestions();
+		String name = quiz.getQuizName();
+		Connection con;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call insertQuiz(?,?,?,?)}");
+			stm.setInt(1, owner.getUserID());
+			stm.setString(2, name);
+			stm.setString(3,descrpt);
+			stm.setDate(4, createTime);
+			int quizid = 0;
+			int questionID = 0;;
+			ResultSet set = stm.executeQuery();
+			while (set.next()) {
+				quizid = set.getInt("ID");
+			}
+			QuestionType type;
+			for(int i =0; i<questions.size(); i++){
+				type = questions.get(i).getType();
+//				if(type == MULTIPLE_CHOICE){
+//					stm = con.prepareCall("{call insertIntoQuestions(?,?)}");
+//					stm.setInt(1, 2);
+//					stm.setInt(2, quizid);
+//					set = stm.executeQuery();
+//					while(set.next()){
+//						questionID = set.getInt("ID");
+//					}
+//					stm = con.prepareCall("{call insertIntoMultChoice(?,?,?)}")
+//				}else if(type == PICTURE_QUIZ){
+//					
+//				}else if(type == QUESTION_ANSWER){
+//					
+//				}else if(type == FILL_THE_GAPS){
+//					
+//				}
+			}
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 }
+
+

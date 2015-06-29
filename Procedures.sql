@@ -167,7 +167,7 @@ begin
 end@
 
 drop procedure if exists insertFriend@
-create procedure insertFriend(useid int, friendid int)
+create procedure insertFriend(userid int, friendid int)
 begin
 	insert into friends(userID, friendID)
 	values (userid, friendid);
@@ -188,3 +188,28 @@ begin
 	values(fromid, toid, quizid , mg, fscore, 0, 0);
 
 end@
+
+
+create procedure insertIntoQuestions(catId int, quizid int)
+begin
+	insert into questions(question_categoryID, quizID)
+	values(catId, quizid);
+	select Max(ID) from questions;
+end@
+
+create procedure insertQuiz(creatorid int ,qname varchar(100),descript varchar(100), createDate datetime)
+begin
+	insert into quizes(creatorID, quiz_name, description, quiz_date)
+	values(creatorid, qname, descript, createDate);
+	select Max(ID) from quizes;
+end@
+
+create procedure insertIntoMultChoice(quest varchar(500), quizid int, answ1 varchar(100), answ2 varchar(100),
+										answ3 varchar(100), answ4 varchar(100), corr_answ varchar(100), questid int)
+begin
+	insert into multiple_choice(question,quizID,answer1,answer2,answer3,answer4,correct_answer,questionID)
+	values(quest, quizid, answ1, answ2, answ3, answ4, corr_answ, questid);
+end@
+
+
+
