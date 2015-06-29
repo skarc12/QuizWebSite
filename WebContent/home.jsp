@@ -1,6 +1,6 @@
 <%@ page import="model.*"%>
 <%@ page import="Servlets.*"%>
-<%@ page import=java.util.List %>
+
 
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -14,10 +14,12 @@ User user = (User) ses.getAttribute("user");
 if(user == null)
 	response.sendRedirect("index.html");
 else{
+	Message[] messages = DBHelper.getUserUnreadMessages(user.getUserID());
 %>
 	<head>
 		<title>Quiz Website</title>
 		<link rel="stylesheet" type="text/css" href="./css/styleHome.css"/>
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	</head>
 	<body>
 		
@@ -38,26 +40,70 @@ else{
 				
 			</div>
 		</div>
-		<% List<Message> messages = null; %>
-		<div class="notifications">
-			<div style="display:inline-block">
-				<select>
-				<%if(messages.size()==0){ %>
-					<option>No Unread Messages</option>
-				<%}else
-					for(int i=0; i<messages.size(); i++){ %>
-					<option>
-						<a href="<%=messages.get(i).getSender().getURL() %>"><%=messages.get(i).getSender().getUsername() %></a>
-						<p><%=messages.get(i).getMsg() %></p>
-					</option>
-				<%} %>
-				</select>
-			
+		<div id="notificationContainer"></div>
+		<div id="messageContainer" style="display: none">
+			<%for(int i=0; i<messages.length; i++){ %>
+			<div>
+				<input class="msgID" type="hidden" value="<%= %>">
+				<h3><a href="<%=messages[i].getSender().getURL() %>"><%=messages[i].getSender().getFirstname() + " " +messages[i].getSender().getLastname() %></a></h3>
+				<h6><%=messages[i].getMsg() %></h6>
 			</div>
-			
+			<%} %>
+		</div>
+		<div id="challengeContainer" style="display: none">
+		
+		</div>
+		<div id="friendRequestContainer" style="display: none">
+		
+		</div>
+		
+		<div class="notifications">
+			<div style="display: inline-block">
+				<h3 onclick="showMessages()">Unread Messages  <%= messages.length %></h3>
+			</div>
+			<div style="display: inline-block">
+				<h3 onclick="showChallenges()">Unread Challenges  <%= messages.length %></h3>
+			</div>
+			<div style="display: inline-block">
+				<h3 onclick="showFriendRequests()">Unread Friend Requests  <%= messages.length %></h3>
+			</div>
+						
 		
 		</div>
 			
 	</body>
 <%} %>
+
+<script type="text/javascript">
+function showMessages(){
+	var arr = [];
+	$.each($(".msgID"), function (i, e){
+		arr.push($(e).val());
+	});
+	var data = {
+			action: "messages",
+			ids: arr
+	};
+	$.ajax({
+		url: "clearNotifications",
+		type: "post",
+		data: data
+	});
+	$("#notificationContainer").html($("#messageContainer").html());
+}
+function showChallenges(){
+	$("#notificationContainer").html($("#challengeContainer").html());$.ajax({
+		url: "clearNotifications",
+		type: "post",
+		data: "challenges"
+	});
+}
+function showFriendRequests(){
+	$("#notificationContainer").html($("#friendRequestContainer").html());$.ajax({
+		url: "clearNotifications",
+		type: "post",
+		data: "friendRequests"
+	});
+}
+</script>
 </html>
