@@ -85,7 +85,6 @@ public class Quiz {
 		this.date = date;
 	}
 	
-	
 	public static class QuizHandle{
 		public int ID;
 		public String name;

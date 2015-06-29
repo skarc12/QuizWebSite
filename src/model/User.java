@@ -50,7 +50,7 @@ public class User {
 		this.userID = userID;
 	}
 	public String getURL(){
-		return "users/"+username;
+		return "User.jsp?username="+username;
 	}
 	
 	public void addFriend(User user){
@@ -93,5 +93,20 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	public boolean isFriend(User other){
+		for(int i=0; i<friends.size(); i++){
+			User friend = friends.get(i);
+			if(friend.getUsername().equals(other.getUsername())) 
+				return true;
+		}
+		return false;
+	}
+	public void removeFriend(String userName){
+		for(int i =0; i<=friends.size(); i++){
+			if(friends.get(i).getUsername().equals(userName)){
+				friends.remove(i);
+				break;
+			}
+		}
+	}
 }

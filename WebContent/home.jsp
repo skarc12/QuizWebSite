@@ -1,6 +1,6 @@
 <%@ page import="model.*"%>
 <%@ page import="Servlets.*"%>
-<%@ page import=java.util.List %>
+
 
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -14,10 +14,16 @@ User user = (User) ses.getAttribute("user");
 if(user == null)
 	response.sendRedirect("index.html");
 else{
+	Message[] messages = DBHelper.getUserUnreadMessages(user.getUserID());
+	Quiz[] popQuizes = DBHelper.getPopularQuizes();
+	Quiz[] recentCreatedQuizes = DBHelper.getRecentlyCreatedQuizes(user);
+	Quiz[] recentQuizActivities = DBHelper.getRecentQuizActivities(user);
+	Quiz[] userPlayedQuizes = DBHelper.getUserPlayedQuizes(user);
 %>
 	<head>
 		<title>Quiz Website</title>
 		<link rel="stylesheet" type="text/css" href="./css/styleHome.css"/>
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	</head>
 	<body>
 		
@@ -33,31 +39,104 @@ else{
 				</form>
 				<a href="https://instagram.com/"><img class = "link" src="./img/2.png"></a>
 				<p class="out"><a href="SignOutServlet">Sing Out</a></p>
-				<p><a href="userPage.html"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
-				<a href="userPage.html"><img class = "user" src="./img/user.jpg"></a>
+				<p><a href="home.jsp"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
+				<a href="home.jsp"><img class = "user" src="./img/user.jpg"></a>
 				
 			</div>
 		</div>
-		<% List<Message> messages = null; %>
-		<div class="notifications">
-			<div style="display:inline-block">
-				<select>
-				<%if(messages.size()==0){ %>
-					<option>No Unread Messages</option>
-				<%}else
-					for(int i=0; i<messages.size(); i++){ %>
-					<option>
-						<a href="<%=messages.get(i).getSender().getURL() %>"><%=messages.get(i).getSender().getUsername() %></a>
-						<p><%=messages.get(i).getMsg() %></p>
-					</option>
-				<%} %>
-				</select>
-			
+		<div id="notificationContainer"></div>
+		<div id="messageContainer" style="display: none">
+			<%for(int i=0; i<messages.length; i++){ %>
+			<div>
+				<input class="msgID" type="hidden" value="<%=messages[i].getId() %>">
+				<h3><a href="<%=messages[i].getSender().getURL() %>"><%=messages[i].getSender().getFirstname() + " " +messages[i].getSender().getLastname() %></a></h3>
+				<h6><%=messages[i].getMsg() %></h6>
 			</div>
-			
+			<%} %>
+		</div>
+		<div id="challengeContainer" style="display: none">
 		
 		</div>
+		<div id="friendRequestContainer" style="display: none">
 			
+		</div>
+		
+		<div class="notifications">
+			<div style="display: inline-block">
+				<h3 onclick="showMessages()">Unread Messages  <%= messages.length %></h3>
+			</div>
+			<div style="display: inline-block">
+				<h3 onclick="showChallenges()">Unread Challenges  <%= messages.length %></h3>
+			</div>
+			<div style="display: inline-block">
+				<h3 onclick="showFriendRequests()">Unread Friend Requests  <%= messages.length %></h3>
+			</div>
+		
+		</div>
+			<hr>
+			<div class="Quizes">
+			<fieldset style="display:inline-block">
+			<legend>Most Popular Quizes:</legend>
+			<%if(popQuizes != null) for(int i=0; i<popQuizes.length; i++){ %>
+				<div><a href="quizPage.jsp?quizID=<%=popQuizes[i].getID() %>"><%=popQuizes[i].getQuizName()%></a></div>
+			<%} %>
+			
+			</fieldset>
+			<fieldset style="display:inline-block">
+			<legend>Recent Created Quizes:</legend>
+			<%if(recentCreatedQuizes != null) for(int i=0; i<recentCreatedQuizes.length; i++){ %>
+				<div><%=recentCreatedQuizes[i].getQuizName() %></div>
+			<%} %>
+			</fieldset>
+			<fieldset style="display:inline-block">
+			<legend>Recent Quiz Activities:</legend>
+			<%if(recentQuizActivities != null) for(int i=0; i<recentQuizActivities.length; i++){ %>
+				<div><%=recentQuizActivities[i].getQuizName() %></div>
+			<%} %>
+			
+			</fieldset>
+			<fieldset style="display:inline-block">
+			<legend>User Played Quizes:</legend>
+			<%if(userPlayedQuizes != null) for(int i=0; i<userPlayedQuizes.length; i++){ %>
+				<div><%=userPlayedQuizes[i].getQuizName() %></div>
+			<%} %>
+			
+			</fieldset>
+			
+			</div>
 	</body>
 <%} %>
+
+<script type="text/javascript">
+function showMessages(){
+	var arr = [];
+	$.each($(".msgID"), function (i, e){
+		arr.push($(e).val());
+	});
+	var data = {
+			action: "messages",
+			ids: arr
+	};
+	$.ajax({
+		url: "clearNotifications",
+		type: "post",
+		data: JSON.stringify(data)
+	});
+	$("#notificationContainer").html($("#messageContainer").html());
+}
+function showChallenges(){
+	$("#notificationContainer").html($("#challengeContainer").html());$.ajax({
+		url: "clearNotifications",
+		type: "post",
+		data: "challenges"
+	});
+}
+function showFriendRequests(){
+	$("#notificationContainer").html($("#friendRequestContainer").html());$.ajax({
+		url: "clearNotifications",
+		type: "post",
+		data: "friendRequests"
+	});
+}
+</script>
 </html>
