@@ -13,61 +13,61 @@ import java.util.List;
 
 import com.mysql.fabric.xmlrpc.base.Array;
 
+import model.Challenge;
 import model.FillTheGapsQuestion;
+import model.FriendRequest;
 import model.Message;
 import model.MultipleChoiceQuestion;
 import model.PictureQuizQuestion;
 import model.QuestinAnswerQuestion;
 import model.Question;
 import model.Question.QuestionType;
+import model.Quiz.QuizHandle;
 import model.Quiz;
 import model.User;
 
-
-
 public class DBHelper {
 	public static User addUser(String name, String lastname, String username,
-			String email, String password){
-		
+			String email, String password) {
+
 		User user = null;
-		
+
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
-			CallableStatement stm = con.prepareCall("{call addUser(?,?,?,?,?)}");
-			stm.setString(1,name);
-			stm.setString(2,lastname);
-			stm.setString(3,username);
-			stm.setString(4,email);
-			stm.setString(5,password);
+			CallableStatement stm = con
+					.prepareCall("{call addUser(?,?,?,?,?)}");
+			stm.setString(1, name);
+			stm.setString(2, lastname);
+			stm.setString(3, username);
+			stm.setString(4, email);
+			stm.setString(5, password);
 			stm.execute();
 			stm.close();
-			/*String update = "Insert into users(first_name, last_name, username, email, password) values("
-					+ "'"
-					+ name
-					+ "','"
-					+ lastname
-					+ "','"
-					+ username
-					+ "','"
-					+ email + "','" + password + "');";
-
-			stmt.executeUpdate(update);*/
-			CallableStatement stmt = con.prepareCall("{call getUserIDByUsername(?)}");
-			stmt.setString(1,username);
-			ResultSet set= stmt.executeQuery();
+			/*
+			 * String update =
+			 * "Insert into users(first_name, last_name, username, email, password) values("
+			 * + "'" + name + "','" + lastname + "','" + username + "','" +
+			 * email + "','" + password + "');";
+			 * 
+			 * stmt.executeUpdate(update);
+			 */
+			CallableStatement stmt = con
+					.prepareCall("{call getUserIDByUsername(?)}");
+			stmt.setString(1, username);
+			ResultSet set = stmt.executeQuery();
 			int userID = 0;
-			if(set.next()){
+			if (set.next()) {
 				userID = set.getInt("ID");
 			}
 			user = new User(name, lastname, email, username, password);
 			user.setUserID(userID);
-			
+
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally{
+		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
@@ -75,21 +75,23 @@ public class DBHelper {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return user;
 	}
+
 	/*
-	 * This functions return true if the user alredy exists in database, and false if it is not.
-	 * For that we have mysql function which searches in the database for that username.
+	 * This functions return true if the user alredy exists in database, and
+	 * false if it is not. For that we have mysql function which searches in the
+	 * database for that username.
 	 */
-	public static boolean exists(String username){
+	public static boolean exists(String username) {
 		Boolean outputValue = false;
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
 			CallableStatement stm = con.prepareCall("{? = call nameInUse(?)}");
-			stm.registerOutParameter(1,Types.BOOLEAN);
-			stm.setString(2,username);
+			stm.registerOutParameter(1, Types.BOOLEAN);
+			stm.setString(2, username);
 			stm.execute();
 			outputValue = stm.getBoolean(1);
 			stm.close();
@@ -97,7 +99,7 @@ public class DBHelper {
 				| IllegalAccessException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
@@ -105,30 +107,33 @@ public class DBHelper {
 				e.printStackTrace();
 			}
 		}
-			//Statement stmt = con.createStatement();
-		//result = con.prepareCall("call nameInUse(username)");
-		System.out.println("booleanis pasuxia: " +outputValue);
+		// Statement stmt = con.createStatement();
+		// result = con.prepareCall("call nameInUse(username)");
+		System.out.println("booleanis pasuxia: " + outputValue);
 		return outputValue;
 	}
-	public static User findUser(String username){
+
+	public static User findUser(String username) {
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
 			Statement stmt = con.createStatement();
-			String select = "Select * from users where username='"+ username + "'";
-			ResultSet set= stmt.executeQuery(select);
-			if(set.next()){
+			String select = "Select * from users where username='" + username
+					+ "'";
+			ResultSet set = stmt.executeQuery(select);
+			if (set.next()) {
 				System.out.println("into if");
 				int id = set.getInt("ID");
-				String firstname =  set.getString("first_name");
+				String firstname = set.getString("first_name");
 				String lastname = set.getString("last_name");
 				String email = set.getString("email");
 				String password = set.getString("password");
-				User user = new User(firstname, lastname, email, username, password,id);
+				User user = new User(firstname, lastname, email, username,
+						password, id);
 				stmt.close();
 				return user;
-			}else{
-				System.out.println("not found: "+username);
+			} else {
+				System.out.println("not found: " + username);
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -142,7 +147,7 @@ public class DBHelper {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
@@ -151,11 +156,10 @@ public class DBHelper {
 			}
 		}
 		return null;
-		
-		
+
 	}
-	
-	public static void markMessageAsSeen(int msg){
+
+	public static void markMessageAsSeen(int msg) {
 		Connection con = null;
 		CallableStatement stm;
 		try {
@@ -163,10 +167,11 @@ public class DBHelper {
 			stm = con.prepareCall("{call changeSeen(?)}");
 			stm.setInt(1, msg);
 			stm.execute();
-		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
@@ -175,13 +180,91 @@ public class DBHelper {
 			}
 		}
 	}
-	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma gaaketa
-	public  static Quiz[] getPopularQuizes(){
+	
+	
+	public static void markChallengeAsSeen(int challenge) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call changeSeenInChallenges(?)}");
+			stm.setInt(1, challenge);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	public static void markRequestAsSeen(int req) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call changeSeenInRequests(?)}");
+			stm.setInt(1, req);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void sendChallenge(User user, String username, int score, int quizID, String msg){
+		int from = user.getUserID();
+		int to = findUser(username).getUserID();
+		Connection con = null;
+		CallableStatement stm = null;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call insertChallenge(?,?,?,?,?)}");
+			stm.setInt(1, from);
+			stm.setInt(2, to);
+			stm.setInt(3, quizID);
+			stm.setString(4, msg);
+			stm.setInt(5, score);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				stm.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma
+	// gaaketa
+	public static Quiz[] getPopularQuizes() {
 		Connection con;
 		Quiz[] quiz = null;
 		try {
 			con = DBConnection.initConnection();
-			CallableStatement stm = con.prepareCall("{call getPopularQuizes()}");
+			CallableStatement stm = con
+					.prepareCall("{call getPopularQuizes()}");
 			ResultSet result = stm.executeQuery();
 			quiz = makeQuizObject(result);
 			stm.close();
@@ -190,16 +273,18 @@ public class DBHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return quiz;
 	}
-	//aq unda daabrunos tavisi sheqmnili quizebi
-	public static Quiz[] getRecentlyCreatedQuizes(User user){
+
+	// aq unda daabrunos tavisi sheqmnili quizebi
+	public static Quiz[] getRecentlyCreatedQuizes(User user) {
 		Quiz[] quizes = null;
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
-			CallableStatement stm = con.prepareCall("{call recentCreatedQuizes(?)}");
+			CallableStatement stm = con
+					.prepareCall("{call recentCreatedQuizes(?)}");
 			stm.setInt(1, user.getUserID());
 			ResultSet result = stm.executeQuery();
 			quizes = makeQuizObject(result);
@@ -208,7 +293,7 @@ public class DBHelper {
 				| IllegalAccessException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
@@ -216,46 +301,290 @@ public class DBHelper {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return quizes;
 	}
-	//aq unda daabrunot tavisi natashebi quizebi
-	public static Quiz[] getRecentQuizActivities(User user){
+
+	// aq unda daabrunot tavisi natamashebi quizebi
+	public static Quiz[] getRecentQuizActivities(User user) {
+		Quiz[] quizes = null;
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm;
+			stm = con.prepareCall("{call RecPlaydQuizesByUser(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			quizes = makeQuizObject(set);
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return quizes;
+	}
+
+	// aq unda daabrunos tavisi sheqmnili quizebi, romelic vigacam gaiara bolos
+	public static Quiz[] getUserPlayedQuizes(User user) {
+		Quiz[] quizes = null;
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm;
+			stm = con.prepareCall("{call recentlyPlayedQuizes(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			quizes = makeQuizObject(set);
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return quizes;
+	}
+
+	public static ArrayList<User> getFriends(User user) {
+		ArrayList<User> friends = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm;
+			stm = con.prepareCall("{call findFriends(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			User friend = null;
+			while (set.next()) {
+				int userID = set.getInt("friendID");
+				friend = generateUser(userID);
+				friends.add(friend);
+			}
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return friends;
+	}
+
+	public static Challenge[] getUnseenChallenges(User user) {
+		Challenge[] challenges = null;
+		List<Challenge> chall = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con
+					.prepareCall("{call getUnseenChallanges(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			Challenge ch = null;
+			User sender = null;
+			User reciever = null;
+			while (set.next()) {
+				int challengeID = set.getInt("ID");
+				int from = set.getInt("fromID");
+				int to = user.getUserID();
+				String text = set.getString("msg");
+				int quizID = set.getInt("quizID");
+				int firstScore = set.getInt("first_Score");
+				int secondScore = set.getInt("second_Score");
+				boolean seen = set.getBoolean("challenge_seen");
+				sender = generateUser(from);
+				reciever = generateUser(to);
+				ch = new Challenge(challengeID, sender, reciever, firstScore, secondScore, text, seen);
+				chall.add(ch);
+			}
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		challenges = new Challenge[chall.size()];
+		return chall.toArray(challenges);
+	}
+
+	public static FriendRequest[] getUnseenFriendRequest(User user) {
+		FriendRequest[] requests = null;
+		List<FriendRequest> req = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con
+					.prepareCall("{call getUnseenFriendRequests(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			FriendRequest r = null;
+			User sender = null;
+			User reciever = null;
+			while (set.next()) {
+				int id = set.getInt("ID");
+				int from = set.getInt("fromID");
+				int to = user.getUserID();
+				boolean seen = set.getBoolean("seen");
+				sender = generateUser(from);
+				reciever = generateUser(to);
+				r = new FriendRequest(id, sender, reciever, seen);
+				req.add(r);
+			}
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		requests = new FriendRequest[req.size()];
+		return req.toArray(requests);
+	}
+
+	/*
+	 * friend this two users.
+	 */
+	public static void addFriend(User user, String username) {
+		int first = user.getUserID();
+		int second = findUser(username).getUserID();
+		makeFriends(first,second);
+		sendRequest(first,second);
 		
-		return null;
 	}
-	//aq unda daabrunos tavisi sheqmnili quizebi, romelic vigacam gaiara bolos
-	public static Quiz[] getUserPlayedQuizes(User user){
-		return null;
+
+	private static void sendRequest(int first, int second) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call insertRequest(?,?)}");
+			stm.setInt(1, first);
+			stm.setInt(2, second);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
 	}
-	//aq unda daabrunos message, romelic ger ar waukitxavs.. 
-	public static Message[] getUserUnreadMessages(int userid){
-		Message [] messages = null;
+
+	private static void makeFriends(int first, int second) {
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call insertFriend(?,?)}");
+			stm.setInt(1, first);
+			stm.setInt(2, second);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+		
+	}
+
+	/*
+	 * unfriend two users.
+	 */
+	public static void unfriend(User user, String username) {
+		Connection con = null;
+		int second = findUser(username).getUserID();
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call unfriend(?,?)}");
+			stm.setInt(1, user.getUserID());
+			stm.setInt(2, second);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+
+	}
+
+	// aq unda daabrunos message, romelic ger ar waukitxavs..
+	public static Message[] getUserUnreadMessages(int userid) {
+		Message[] messages = null;
 		List<Message> mess = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
-			CallableStatement stm = con.prepareCall("{call getUnreadMessages(?)}");
-			stm.setInt(1,userid);
+			CallableStatement stm = con
+					.prepareCall("{call getUnreadMessages(?)}");
+			stm.setInt(1, userid);
 			ResultSet set = stm.executeQuery();
 			Message msg = null;
 			User sender = null;
 			User reciever = null;
-			while(set.next()){
+			while (set.next()) {
 				int msgID = set.getInt("ID");
 				int from = set.getInt("fromID");
 				int to = userid;
 				String text = set.getString("msg");
 				sender = generateUser(from);
 				reciever = generateUser(to);
-				msg = new Message(msgID,sender, reciever, text, false);
+				msg = new Message(msgID, sender, reciever, text, false);
 				mess.add(msg);
 			}
-		}catch (ClassNotFoundException | InstantiationException
+		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
@@ -263,16 +592,85 @@ public class DBHelper {
 				e.printStackTrace();
 			}
 		}
-		messages = new Message [mess.size()];
+		messages = new Message[mess.size()];
 		return mess.toArray(messages);
 	}
-	private static Quiz[] makeQuizObject(ResultSet res){
+
+	/*
+	 * return all quizes that the user playd already, but not the array of quiz
+	 * objects. it returns an array\ of object wich has quiz id, name and the
+	 * point the user took on this quiz.
+	 */
+	public static QuizHandle[] getAllQuizes(User user) {
+		QuizHandle[] info = null;
+		List<QuizHandle> quizes = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con
+					.prepareCall("{call getAllPlayedQuizes(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet set = stm.executeQuery();
+			QuizHandle quiz = null;
+			while (set.next()) {
+				int id = set.getInt("ID");
+				String name = set.getString("quiz_name");
+				int score = set.getInt("score");
+				quiz = new QuizHandle(id, name, score);
+				quizes.add(quiz);
+
+			}
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		info = new QuizHandle[quizes.size()];
+		return quizes.toArray(info);
+	}
+
+	public static Quiz getQuizByID(int quizID) {
+		Quiz result = null;
+		Quiz[] quiz = null;
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call getQuizByID(?)}");
+			stm.setInt(1, quizID);
+			ResultSet set = stm.executeQuery();
+			quiz = makeQuizObject(set);
+			if (quiz.length == 1) {
+				result = quiz[0];
+			}
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	private static Quiz[] makeQuizObject(ResultSet res) {
 		List<Quiz> questslist = new ArrayList<Quiz>();
 		try {
-			while(res.next()){
+			while (res.next()) {
 				int userID = res.getInt("creatorID");
 				User user = generateUser(userID);
-				int id =  res.getInt("ID");
+				int id = res.getInt("ID");
 				String name = res.getString("quiz_name");
 				String description = res.getString("description");
 				boolean isOnePage = res.getBoolean("isOnePage");
@@ -280,7 +678,7 @@ public class DBHelper {
 				boolean random = res.getBoolean("random");
 				Date date = res.getDate("quiz_date");
 				ArrayList<Question> quests = getQuestions(id);
-				Quiz quiz = new Quiz(name, date);
+				Quiz quiz = new Quiz(id, name, date);
 				quiz.setDescription(description);
 				quiz.setFeedback(feedback);
 				quiz.setOnePage(isOnePage);
@@ -288,7 +686,7 @@ public class DBHelper {
 				quiz.setQuestions(quests);
 				quiz.setRandom(random);
 				questslist.add(quiz);
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -296,57 +694,67 @@ public class DBHelper {
 		Quiz[] result = new Quiz[questslist.size()];
 		return questslist.toArray(result);
 	}
-	private static ArrayList<Question> getQuestions(int id) throws Exception{
+
+	private static ArrayList<Question> getQuestions(int id) throws Exception {
 		ArrayList<Question> quests = new ArrayList<Question>();
 		Connection con = DBConnection.initConnection();
 		CallableStatement stm = con.prepareCall("{call getQuestionIDs(?)}");
-		stm.setInt(1,id);
+		stm.setInt(1, id);
 		ResultSet set = stm.executeQuery();
-		while(set.next()){
+		while (set.next()) {
 			int questionID = set.getInt("ID");
 			int categoryID = set.getInt("question_categoryID");
-			Question quest = getQuestion(questionID,categoryID);
+			Question quest = getQuestion(questionID, categoryID);
 			quests.add(quest);
 		}
 		con.close();
 		stm.close();
 		return quests;
 	}
-	private static Question getQuestion(int questionID, int categoryID) throws Exception {
+
+	private static Question getQuestion(int questionID, int categoryID)
+			throws Exception {
 		Connection con = DBConnection.initConnection();
 		CallableStatement stm = con.prepareCall("{call getQuestion(?,?)}");
-		stm.setInt(1,questionID);
-		stm.setInt(2,categoryID);
+		stm.setInt(1, questionID);
+		stm.setInt(2, categoryID);
 		ResultSet set = stm.executeQuery();
 		Question quest = null;
-		while(set.next()){
-			if(categoryID == 1){
+		while (set.next()) {
+			if (categoryID == 1) {
 				quest = initializeFillTheGaps(set, categoryID);
-			}else if(categoryID ==2){
+			} else if (categoryID == 2) {
 				quest = initializeMulChoice(set, categoryID);
-			}else if(categoryID == 3){
+			} else if (categoryID == 3) {
 				quest = initializePictureQuiz(set, categoryID);
-			}else if(categoryID == 4){
+			} else if (categoryID == 4) {
 				quest = initializeSimpleQuiz(set, categoryID);
 			}
 		}
 		return quest;
 	}
-	private static Question initializeSimpleQuiz(ResultSet set, int categoryID) throws SQLException {
+
+	private static Question initializeSimpleQuiz(ResultSet set, int categoryID)
+			throws SQLException {
 		String answer = set.getString("answer");
 		int score = set.getInt("score");
 		String questionText = set.getString("question");
-		Question question = new QuestinAnswerQuestion(questionText, answer, score);
+		Question question = new QuestinAnswerQuestion(questionText, answer,
+				score);
 		return question;
 	}
-	private static Question initializePictureQuiz(ResultSet set, int categoryID) throws SQLException {
+
+	private static Question initializePictureQuiz(ResultSet set, int categoryID)
+			throws SQLException {
 		String answer = set.getString("answer");
 		int score = set.getInt("score");
 		String url = set.getString("url");
-		Question question = new PictureQuizQuestion(url,answer,score);
+		Question question = new PictureQuizQuestion(url, answer, score);
 		return question;
 	}
-	private static Question initializeMulChoice(ResultSet set, int categoryID) throws SQLException {
+
+	private static Question initializeMulChoice(ResultSet set, int categoryID)
+			throws SQLException {
 		String corr_answer = set.getString("correct_answer");
 		int score = set.getInt("score");
 		String questionText = set.getString("question");
@@ -354,45 +762,52 @@ public class DBHelper {
 		String ans2 = set.getString("answer2");
 		String ans3 = set.getString("answer3");
 		String ans4 = set.getString("answer4");
-		Question question = new MultipleChoiceQuestion(questionText, new String[]{ ans1, ans2, ans3, ans4}, corr_answer, score);
+		Question question = new MultipleChoiceQuestion(questionText,
+				new String[] { ans1, ans2, ans3, ans4 }, corr_answer, score);
 		return question;
 	}
-	private static Question initializeFillTheGaps(ResultSet set, int categoryID) throws SQLException {
+
+	private static Question initializeFillTheGaps(ResultSet set, int categoryID)
+			throws SQLException {
 		String answer = set.getString("answer");
 		int score = set.getInt("score");
 		String questionText = set.getString("question");
 		int numOfAnswers = set.getInt("num_of_answers");
 		List<String> a = new ArrayList<>();
-		String [] answers = new String[numOfAnswers];
+		String[] answers = new String[numOfAnswers];
 		int fromIndex = 0, endIndex = 0;
 		String ans;
-		while(numOfAnswers!=0){
-			endIndex=answer.indexOf("#", fromIndex);
-			a.add(answer.substring(fromIndex, endIndex+1));
+		while (numOfAnswers != 0) {
+			endIndex = answer.indexOf("#", fromIndex);
+			a.add(answer.substring(fromIndex, endIndex + 1));
 			fromIndex = endIndex;
 			numOfAnswers--;
 		}
-		Question question = new FillTheGapsQuestion(questionText, a.toArray(answers), score);
+		Question question = new FillTheGapsQuestion(questionText,
+				a.toArray(answers), score);
 		return question;
 	}
-	private static User generateUser(int userID) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+	private static User generateUser(int userID) throws SQLException,
+			ClassNotFoundException, InstantiationException,
+			IllegalAccessException {
 		User user = null;
 		Connection con = DBConnection.initConnection();
 		CallableStatement stm = con.prepareCall("{call getUser(?)}");
-		stm.setInt(1,userID);
+		stm.setInt(1, userID);
 		ResultSet set = stm.executeQuery();
-		while(set.next()){
+		while (set.next()) {
 			int id = set.getInt("ID");
-			String firstname =  set.getString("first_name");
+			String firstname = set.getString("first_name");
 			String lastname = set.getString("last_name");
 			String username = set.getString("username");
 			String email = set.getString("email");
 			String password = set.getString("password");
-			user = new User(firstname, lastname, email, username, password,id);
+			user = new User(firstname, lastname, email, username, password, id);
 		}
 		con.close();
 		stm.close();
 		return user;
 	}
-	
+
 }

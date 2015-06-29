@@ -1,15 +1,31 @@
 package model;
 
 public class FriendRequest {
+	int id;
 	User sender;
 	User reciever;
 	boolean seen;
-	public FriendRequest(User sender, User reciever, boolean seen) {
+	public FriendRequest(int id,User sender, User reciever, boolean seen) {
 		super();
+		this.id = id;
 		this.sender = sender;
 		this.reciever = reciever;
 		this.seen = seen;
 	}
+	
+	public FriendRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public User getSender() {
 		return sender;
 	}
