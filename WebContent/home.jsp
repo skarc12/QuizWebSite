@@ -15,6 +15,10 @@ if(user == null)
 	response.sendRedirect("index.html");
 else{
 	Message[] messages = DBHelper.getUserUnreadMessages(user.getUserID());
+	Quiz[] popQuizes = DBHelper.getPopularQuizes();
+	Quiz[] recentCreatedQuizes = DBHelper.getRecentlyCreatedQuizes(user);
+	Quiz[] recentQuizActivities = DBHelper.getRecentQuizActivities(user);
+	Quiz[] userPlayedQuizes = DBHelper.getUserPlayedQuizes(user);
 %>
 	<head>
 		<title>Quiz Website</title>
@@ -35,8 +39,8 @@ else{
 				</form>
 				<a href="https://instagram.com/"><img class = "link" src="./img/2.png"></a>
 				<p class="out"><a href="SignOutServlet">Sing Out</a></p>
-				<p><a href="userPage.html"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
-				<a href="userPage.html"><img class = "user" src="./img/user.jpg"></a>
+				<p><a href="home.jsp"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
+				<a href="home.jsp"><img class = "user" src="./img/user.jpg"></a>
 				
 			</div>
 		</div>
@@ -44,7 +48,7 @@ else{
 		<div id="messageContainer" style="display: none">
 			<%for(int i=0; i<messages.length; i++){ %>
 			<div>
-				<input class="msgID" type="hidden" value="<%= %>">
+				<input class="msgID" type="hidden" value="<%=messages[i].getId() %>">
 				<h3><a href="<%=messages[i].getSender().getURL() %>"><%=messages[i].getSender().getFirstname() + " " +messages[i].getSender().getLastname() %></a></h3>
 				<h6><%=messages[i].getMsg() %></h6>
 			</div>
@@ -54,7 +58,7 @@ else{
 		
 		</div>
 		<div id="friendRequestContainer" style="display: none">
-		
+			
 		</div>
 		
 		<div class="notifications">
@@ -67,10 +71,39 @@ else{
 			<div style="display: inline-block">
 				<h3 onclick="showFriendRequests()">Unread Friend Requests  <%= messages.length %></h3>
 			</div>
-						
 		
 		</div>
+			<hr>
+			<div class="Quizes">
+			<fieldset style="display:inline-block">
+			<legend>Most Popular Quizes:</legend>
+			<%if(popQuizes != null) for(int i=0; i<popQuizes.length; i++){ %>
+				<div><a href="quizPage.jsp?quizID=<%=popQuizes[i].getID() %>"><%=popQuizes[i].getQuizName()%></a></div>
+			<%} %>
 			
+			</fieldset>
+			<fieldset style="display:inline-block">
+			<legend>Recent Created Quizes:</legend>
+			<%if(recentCreatedQuizes != null) for(int i=0; i<recentCreatedQuizes.length; i++){ %>
+				<div><%=recentCreatedQuizes[i].getQuizName() %></div>
+			<%} %>
+			</fieldset>
+			<fieldset style="display:inline-block">
+			<legend>Recent Quiz Activities:</legend>
+			<%if(recentQuizActivities != null) for(int i=0; i<recentQuizActivities.length; i++){ %>
+				<div><%=recentQuizActivities[i].getQuizName() %></div>
+			<%} %>
+			
+			</fieldset>
+			<fieldset style="display:inline-block">
+			<legend>User Played Quizes:</legend>
+			<%if(userPlayedQuizes != null) for(int i=0; i<userPlayedQuizes.length; i++){ %>
+				<div><%=userPlayedQuizes[i].getQuizName() %></div>
+			<%} %>
+			
+			</fieldset>
+			
+			</div>
 	</body>
 <%} %>
 
@@ -87,7 +120,7 @@ function showMessages(){
 	$.ajax({
 		url: "clearNotifications",
 		type: "post",
-		data: data
+		data: JSON.stringify(data)
 	});
 	$("#notificationContainer").html($("#messageContainer").html());
 }

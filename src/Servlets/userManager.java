@@ -8,21 +8,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.JsonArray;
+import model.User;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * Servlet implementation class clearNotifications
+ * Servlet implementation class userManager
  */
-@WebServlet("/clearNotifications")
-public class clearNotifications extends HttpServlet {
+@WebServlet("/userManager")
+public class userManager extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public clearNotifications() {
+    public userManager() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,22 +39,20 @@ public class clearNotifications extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user =(User) request.getSession().getAttribute("user");
 		String json = addQuiz.readAll(request.getInputStream());
 		JsonObject obj = new JsonParser().parse(json).getAsJsonObject();
-		String content = obj.get("action").getAsString();
-		switch(content){
-			case "messages":{
-				JsonArray arr = obj.get("ids").getAsJsonArray();
-				for(int i=0; i<arr.size(); i++){
-					DBHelper.markMessageAsSeen(arr.get(i).getAsInt());
-				}
-			}
-			case "challenges":{
-				
-			}
-			case "friendRequests":{
-				
-			}
+		String action = obj.get("action").getAsString();
+		if(action.equals("Unfriend")){
+			user.removeFriend(obj.get("username").getAsString());
+			response.getOutputStream().print("Add Friend");
+		} else if(action.equals("Add Friend")){
+			user.addFriend(DBHelper.findUser(obj.get("username").getAsString()));
+			response.getOutputStream().print("Unfriend");
+		} else if(action.equals("sendMessage")){
+			//send message DBHelper.send
+		} else if(action.equals("sendChallenge")){
+			//send challengee DBHekoer send
 		}
 	}
 

@@ -84,6 +84,5 @@ public class Quiz {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
 
 }

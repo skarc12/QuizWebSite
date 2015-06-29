@@ -13,10 +13,27 @@ if(user == null){
 %>
 <head>
 	<meta charset="ISO-8859-1">
-	<title>Insert title here</title>
+	<title>Create new Quiz</title>
+	<!-- <link rel="stylesheet" type="text/css" href="./css/styleHome.css"/> -->
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
-		
+<%-- <a href="creatQuiz.jsp"><img class = "quiz" src="./img/blaa.png" title="Create New Quiz"></a>
+			<hr>
+	
+		<div class = "headerMenu" size = "60">
+			<div class = "search-box">
+
+				<form action="search.php" method = "GET" id = "search">
+					<input type = "text" name="q" size="60" placeholder="Search ...">
+				</form>
+				<a href="https://instagram.com/"><img class = "link" src="./img/2.png"></a>
+				<p class="out"><a href="SignOutServlet">Sing Out</a></p>
+				<p><a href="home.jsp"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
+				<a href="home.jsp"><img class = "user" src="./img/user.jpg"></a>
+				
+			</div>
+		</div>
+		 --%>
 <div id="questionTemplate" style="display: none">
 	<fieldset class="question">
 		<div class="questionType">
@@ -78,6 +95,7 @@ if(user == null){
 </div>
 
 <body>
+<div>
 	Choose question category:<BR> 
 	<fieldset>
 	<legend>Quiz</legend>
@@ -87,6 +105,7 @@ if(user == null){
 		<p><input type="checkbox" id="quizFeedback"/>Feedback</p>
 		<p><input type="checkbox" id="quizIsOnePage"/>Is One Page</p>  -->
 	</fieldset>
+</div>
 	<fieldset id="questions">
 		<legend>Questions</legend>
 		

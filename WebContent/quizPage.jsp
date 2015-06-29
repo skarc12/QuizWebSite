@@ -1,3 +1,4 @@
+<%@page import="Servlets.DBHelper"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="model.*"%>
@@ -9,6 +10,8 @@ User user = (User)ses.getAttribute("user");
 if(user == null){
 	response.sendRedirect("index.html");
 }else{
+	String id = request.getParameter("quizID");
+	
 Quiz quiz = (Quiz) ses.getAttribute("quiz");
 %>
 	<head>
