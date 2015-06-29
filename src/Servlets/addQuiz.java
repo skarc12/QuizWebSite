@@ -110,8 +110,7 @@ public class addQuiz extends HttpServlet {
 		//DBHeler.addQuiz(quizObj);
 		System.out.println("name: "+quizObj.getQuizName());
 		System.out.println("random: "+quizObj.isRandom());
-		request.getSession().setAttribute("quiz", quizObj);
-		response.getOutputStream().print("quizPage.jsp");
+		response.getOutputStream().print("home.jsp");
 	}
 	
 	static String readAll(InputStream in){

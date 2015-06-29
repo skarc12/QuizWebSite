@@ -1,3 +1,4 @@
+<%@page import="model.Quiz.QuizHandle"%>
 <%@ page import="model.*"%>
 <%@ page import="Servlets.*"%>
 
@@ -69,7 +70,14 @@ else{
 		<div style="display:inline-block">
 			<fieldset>
 				<h3>Send Challenge:</h3>
-				<select id="challenge"><% %></select>
+				<select id="challenge"><% 
+				QuizHandle[] quizes = DBHelper.getAllQuizes(user);
+				for(int i=0; i<quizes.length; i++){
+				%>
+					<option value="<%=quizes[i].ID %>"><%=quizes[i].name %><input class="ownScore" type="hidden" value="<%=quizes[i].score%>"></option>
+				<%} %>
+				</select>
+				<textarea id="challengeText" rows="3" cols="30"></textarea>
 				<button onclick="SendChalenge()">Send</button>
 			</fieldset>
 		</div>
@@ -109,7 +117,9 @@ function SendChalenge(){
 	var request = {};
 	request.action = "sendChallenge";
 	request.username = $("#username").val();
-	request.quiz = $("#challenge").val();
+	request.quizID = $("#challenge").val();
+	request.ownScore = $("#challenge").find(".ownScore").val();
+	request.message = $("#challengeText").val();
 	$.ajax({
 		url: "userManager",
 		type: "post",

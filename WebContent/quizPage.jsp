@@ -11,8 +11,7 @@ if(user == null){
 	response.sendRedirect("index.html");
 }else{
 	String id = request.getParameter("quizID");
-	
-Quiz quiz = (Quiz) ses.getAttribute("quiz");
+	Quiz quiz = DBHelper.getQuizByID(Integer.parseInt(id));
 %>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">

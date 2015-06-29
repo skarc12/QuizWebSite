@@ -45,14 +45,17 @@ public class userManager extends HttpServlet {
 		String action = obj.get("action").getAsString();
 		if(action.equals("Unfriend")){
 			user.removeFriend(obj.get("username").getAsString());
+			DBHelper.unfriend(user, obj.get("username").getAsString());
 			response.getOutputStream().print("Add Friend");
 		} else if(action.equals("Add Friend")){
 			user.addFriend(DBHelper.findUser(obj.get("username").getAsString()));
+			DBHelper.addFriend(user,obj.get("username").getAsString());
 			response.getOutputStream().print("Unfriend");
 		} else if(action.equals("sendMessage")){
+			
 			//send message DBHelper.send
 		} else if(action.equals("sendChallenge")){
-			//send challengee DBHekoer send
+			DBHelper.sendChallenge(user, obj.get("username").getAsString(), obj.get("ownScore").getAsInt(), obj.get("quizID").getAsInt(), obj.get("message").getAsString());
 		}
 	}
 
