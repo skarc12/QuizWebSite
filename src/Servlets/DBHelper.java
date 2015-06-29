@@ -53,7 +53,7 @@ public class DBHelper {
 			 * stmt.executeUpdate(update);
 			 */
 			CallableStatement stmt = con
-					.prepareCall("{call getUserIDByUsername(?)}");
+					.prepareCall("{call getUserByUsername(?)}");
 			stmt.setString(1, username);
 			ResultSet set = stmt.executeQuery();
 			int userID = 0;
@@ -180,8 +180,7 @@ public class DBHelper {
 			}
 		}
 	}
-	
-	
+
 	public static void markChallengeAsSeen(int challenge) {
 		Connection con = null;
 		CallableStatement stm;
@@ -203,8 +202,7 @@ public class DBHelper {
 			}
 		}
 	}
-	
-	
+
 	public static void markRequestAsSeen(int req) {
 		Connection con = null;
 		CallableStatement stm;
@@ -227,7 +225,8 @@ public class DBHelper {
 		}
 	}
 
-	public static void sendChallenge(User user, String username, int score, int quizID, String msg){
+	public static void sendChallenge(User user, String username, int score,
+			int quizID, String msg) {
 		int from = user.getUserID();
 		int to = findUser(username).getUserID();
 		Connection con = null;
@@ -254,8 +253,9 @@ public class DBHelper {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
+
 	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma
 	// gaaketa
 	public static Quiz[] getPopularQuizes() {
@@ -412,7 +412,8 @@ public class DBHelper {
 				boolean seen = set.getBoolean("challenge_seen");
 				sender = generateUser(from);
 				reciever = generateUser(to);
-				ch = new Challenge(challengeID, sender, reciever, firstScore, secondScore, text, seen,quizID);
+				ch = new Challenge(challengeID, sender, reciever, firstScore,
+						secondScore, text, seen, quizID);
 				chall.add(ch);
 			}
 		} catch (ClassNotFoundException | InstantiationException
@@ -478,9 +479,9 @@ public class DBHelper {
 		System.out.println(first);
 		int second = findUser(username).getUserID();
 		System.out.println(second);
-		makeFriends(first,second);
-		sendRequest(first,second);
-		
+		makeFriends(first, second);
+		sendRequest(first, second);
+
 	}
 
 	private static void sendRequest(int first, int second) {
@@ -503,7 +504,7 @@ public class DBHelper {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
+		}
 	}
 
 	private static void makeFriends(int first, int second) {
@@ -530,8 +531,8 @@ public class DBHelper {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
-		
+		}
+
 	}
 
 	/*
@@ -558,7 +559,7 @@ public class DBHelper {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
+		}
 
 	}
 
@@ -816,10 +817,7 @@ public class DBHelper {
 		return user;
 	}
 
-
-
-
-	public static void addQuizIntoDatabase(Quiz quiz){
+	public static void addQuizIntoDatabase(Quiz quiz) {
 		Date createTime = quiz.getDate();
 		String descrpt = quiz.getDescription();
 		User owner = quiz.getOwnes();
@@ -828,45 +826,107 @@ public class DBHelper {
 		Connection con;
 		try {
 			con = DBConnection.initConnection();
-			CallableStatement stm = con.prepareCall("{call insertQuiz(?,?,?,?)}");
+			CallableStatement stm = con
+					.prepareCall("{call insertQuiz(?,?,?,?)}");
 			stm.setInt(1, owner.getUserID());
 			stm.setString(2, name);
-			stm.setString(3,descrpt);
+			stm.setString(3, descrpt);
 			stm.setDate(4, createTime);
 			int quizid = 0;
-			int questionID = 0;;
+			int questionID = 0;
+			;
 			ResultSet set = stm.executeQuery();
 			while (set.next()) {
 				quizid = set.getInt("ID");
-			}
-			QuestionType type;
-			for(int i =0; i<questions.size(); i++){
-				type = questions.get(i).getType();
-//				if(type == MULTIPLE_CHOICE){
-//					stm = con.prepareCall("{call insertIntoQuestions(?,?)}");
-//					stm.setInt(1, 2);
-//					stm.setInt(2, quizid);
-//					set = stm.executeQuery();
-//					while(set.next()){
-//						questionID = set.getInt("ID");
-//					}
-//					stm = con.prepareCall("{call insertIntoMultChoice(?,?,?)}")
-//				}else if(type == PICTURE_QUIZ){
-//					
-//				}else if(type == QUESTION_ANSWER){
-//					
-//				}else if(type == FILL_THE_GAPS){
-//					
-//				}
+				QuestionType type;
+				for (int i = 0; i < questions.size(); i++) {
+					type = questions.get(i).getType();
+					if (type == QuestionType.MULTIPLE_CHOICE) {
+						MultipleChoiceQuestion q;
+						q = (MultipleChoiceQuestion) questions.get(i);
+						stm = con
+								.prepareCall("{call insertIntoQuestions(?,?)}");
+						stm.setInt(1, 2);
+						stm.setInt(2, quizid);
+						set = stm.executeQuery();
+						while (set.next()) {
+							questionID = set.getInt("ID");
+						}
+						stm = con
+								.prepareCall("{call insertIntoMultChoice(?,?,?,?,?,?,?,?)}");
+						stm.setString(1, q.getQuestion());
+						stm.setInt(1, quizid);
+						stm.setString(1, q.getAnswer1());
+						stm.setString(1, q.getAnswer2());
+						stm.setString(1, q.getAnswer3());
+						stm.setString(1, q.getAnswer4());
+						stm.setString(1, q.getCorrectAnswer());
+						stm.setInt(1, questionID);
+						stm.execute();
+					} else if (type == QuestionType.PICTURE_QUIZ) {
+						PictureQuizQuestion q;
+						q = (PictureQuizQuestion) questions.get(i);
+						stm = con
+								.prepareCall("{call insertIntoQuestions(?,?)}");
+						stm.setInt(1, 3);
+						stm.setInt(2, quizid);
+						set = stm.executeQuery();
+						while (set.next()) {
+							questionID = set.getInt("ID");
+						}
+						stm = con
+								.prepareCall("{call insertIntoPictQuez(?,?,?,?)}");
+						stm.setString(1, q.getUrl());
+						stm.setInt(3, quizid);
+						stm.setString(2, q.getAnswer());
+						stm.setInt(4, questionID);
+						stm.execute();
+					} else if (type == QuestionType.QUESTION_ANSWER) {
+						QuestinAnswerQuestion q;
+						q = (QuestinAnswerQuestion) questions.get(i);
+						stm = con
+								.prepareCall("{call insertIntoQuestions(?,?)}");
+						stm.setInt(1, 4);
+						stm.setInt(2, quizid);
+						set = stm.executeQuery();
+						while (set.next()) {
+							questionID = set.getInt("ID");
+						}
+						stm = con
+								.prepareCall("{call insertIntoQuestAnswer(?,?,?,?)}");
+						stm.setString(1, q.getQuestion());
+						stm.setInt(3, quizid);
+						stm.setString(2, q.getAnswer());
+						stm.setInt(4, questionID);
+						stm.execute();
+					} else if (type == QuestionType.FILL_THE_GAPS) {
+						FillTheGapsQuestion q;
+						q = (FillTheGapsQuestion) questions.get(i);
+						stm = con
+								.prepareCall("{call insertIntoQuestions(?,?)}");
+						stm.setInt(1, 1);
+						stm.setInt(2, quizid);
+						set = stm.executeQuery();
+						while (set.next()) {
+							questionID = set.getInt("ID");
+						}
+						stm = con
+								.prepareCall("{call insertIntoFillTheGaps(?,?,?,?,?)}");
+						stm.setString(1, q.getQuestion());
+						stm.setInt(4, quizid);
+						stm.setInt(5, questionID);
+						stm.setString(2, q.getAnswers().toString());
+						stm.setInt(3, q.getAnswers().length);
+						stm.execute();
+					}
+				}
 			}
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
-
-

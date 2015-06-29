@@ -68,7 +68,7 @@ public class addQuiz extends HttpServlet {
 		for(int i=0; i<questions.size(); i++){
 			JsonObject question = questions.get(i).getAsJsonObject();
 			int questionCategoryId = question.get("category").getAsInt();
-			if(questionCategoryId == 1 ){
+			if(questionCategoryId == 4 ){
 				String questionText = question.get("question").getAsString();
 				String questionAnswer = question.get("answer").getAsString();
 				QuestinAnswerQuestion q = new QuestinAnswerQuestion();
@@ -94,7 +94,7 @@ public class addQuiz extends HttpServlet {
 				PictureQuizQuestion q = new PictureQuizQuestion(pictureUrl, questionAnswer, 1);
 				questionsList.add(q);
 			}
-			else  if(questionCategoryId == 4 ){
+			else  if(questionCategoryId == 1 ){
 				String questionText = question.get("question").getAsString();
 				JsonArray jsonAnswers = question.get("answers").getAsJsonArray();
 				String [] answers = new String[jsonAnswers.size()];
@@ -107,7 +107,7 @@ public class addQuiz extends HttpServlet {
 			}
 		}
 		quizObj.setOwnes((User)request.getSession().getAttribute("user"));
-		//DBHeler.addQuiz(quizObj);
+		DBHelper.addQuizIntoDatabase(quizObj);
 		System.out.println("name: "+quizObj.getQuizName());
 		System.out.println("random: "+quizObj.isRandom());
 		response.getOutputStream().print("home.jsp");
