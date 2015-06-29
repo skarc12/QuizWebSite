@@ -73,7 +73,7 @@ begin
 	select * from quizes as a
 	where a.creatorID = userID
 	order by a.quiz_date desc
-	limit 2;
+	limit 5;
 end@
 
 drop procedure if exists changeSeen@
@@ -195,14 +195,14 @@ create procedure insertIntoQuestions(catId int, quizid int)
 begin
 	insert into questions(question_categoryID, quizID)
 	values(catId, quizid);
-	select Max(ID) from questions;
+	select Max(ID) as ID from questions;
 end@
 drop procedure if exists insertQuiz@
 create procedure insertQuiz(creatorid int ,qname varchar(100),descript varchar(100), createDate datetime)
 begin
 	insert into quizes(creatorID, quiz_name, description, quiz_date)
 	values(creatorid, qname, descript, createDate);
-	select Max(ID) from quizes;
+	select Max(ID) as ID from quizes;
 end@
 drop procedure if exists insertIntoMultChoice@
 

@@ -855,13 +855,13 @@ public class DBHelper {
 						stm = con
 								.prepareCall("{call insertIntoMultChoice(?,?,?,?,?,?,?,?)}");
 						stm.setString(1, q.getQuestion());
-						stm.setInt(1, quizid);
-						stm.setString(1, q.getAnswer1());
-						stm.setString(1, q.getAnswer2());
-						stm.setString(1, q.getAnswer3());
-						stm.setString(1, q.getAnswer4());
-						stm.setString(1, q.getCorrectAnswer());
-						stm.setInt(1, questionID);
+						stm.setInt(2, quizid);
+						stm.setString(3, q.getAnswer1());
+						stm.setString(4, q.getAnswer2());
+						stm.setString(5, q.getAnswer3());
+						stm.setString(6, q.getAnswer4());
+						stm.setString(7, q.getCorrectAnswer());
+						stm.setInt(8, questionID);
 						stm.execute();
 					} else if (type == QuestionType.PICTURE_QUIZ) {
 						PictureQuizQuestion q;
