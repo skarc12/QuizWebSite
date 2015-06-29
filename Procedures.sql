@@ -15,6 +15,7 @@ begin
 	select * from users where ID = userID;
 end@
 
+
 drop procedure if exists getPopularQuizes@
 create procedure getPopularQuizes()
 begin
@@ -59,7 +60,7 @@ begin
 
 end@
 
-drop procedure if exists getUserByUsername@
+drop procedure if exists getUserIDByUsername@
 create procedure getUserByUsername(uname varchar(100))
 begin
 	select ID from users where  username = uname;
@@ -80,18 +81,110 @@ create procedure changeSeen(msgID int)
 begin
 	UPDATE messages SET seen = 1 WHERE ID = msgID;
 end@
+
 -- unda daabrunos si qvizebi romlebi userID-m sheqmna da tan bolos itamasha es qvizebi vigaceebma
 -- anu bolos natamashebi am useris mier sheyqmnili qvizebi
-
 drop procedure if exists recentlyPlayedQuizes@
-create procedure recentlyPlayedQuizes(useID int)
+create procedure recentlyPlayedQuizes(uID int)
 begin
 
-	select b.*,a.quiz_name from quizes as a, take_quize as b
-	where a.creatorID = 9
+	select a.*from quizes as a, take_quize as b
+	where a.creatorID = uID
 	and a.ID = b.quizID
 	order by b.take_tike desc
 	limit 2;
 
 
-end
+end@
+
+drop procedure if exists findFriends@
+create procedure findFriends(usID int)
+begin
+	select friendID from friends 
+	where userID = usID;
+end@
+
+drop procedure if exists getUnseenChallanges@
+create procedure getUnseenChallanges(usID int)
+begin
+	select * from challenge
+	where toID = userID
+	and challenge_seen  = 0;
+end@
+
+drop procedure if exists changeSeenInChallenges@
+create procedure changeSeenInChallenges(chID int)
+begin
+	UPDATE challenge SET seen = 1 WHERE ID = chID;
+end@
+
+drop procedure if exists getUnseenFriendRequests@
+create procedure getUnseenFriendRequests(usID int)
+begin
+	select * from friendrequest
+	where toID = userID
+	and seen  = 0;
+end@
+
+drop procedure if exists changeSeenInRequests@
+create procedure changeSeenInRequests(frID int)
+begin
+	UPDATE friendrequest SET seen = 1 WHERE ID = frID;
+end@
+
+drop procedure if exists RecPlaydQuizesByUser@
+create procedure RecPlaydQuizesByUser(uID int)
+begin
+	select a.* from quizes as a, take_quize as b
+	where b.userID = uID
+	and a.ID = b.quizID
+	order by b.take_tike desc
+	limit 2;
+end@
+
+drop procedure if exists getAllPlayedQuizes@
+create procedure getAllPlayedQuizes(uID int)
+begin
+	select a.ID, a.quiz_name,b.score from quizes as a, take_quize as b
+	where b.userID = uID
+	and a.ID = b.quizID
+	order by b.score desc;
+end@
+
+drop procedure if exists getQuizByID@
+create procedure getQuizByID(qID int)
+begin
+	select * from quizes
+	where ID = qID;
+end@
+
+drop procedure if exists insertRequest@
+create procedure insertRequest(fromid int, toid int)
+begin
+	insert into friendrequest(fromID,toID,seen)
+	values(fromid,toid,0);
+	
+end@
+
+drop procedure if exists insertFriend@
+create procedure insertFriend(useid int, friendid int)
+begin
+	insert into friends(userID, friendID)
+	values (userid, friendid);
+	insert into friends(userID, friendID)
+	values (friendid, userid);
+end@
+
+drop procedure if exists unfriend@
+create procedure unfriend(userid int, friendid int)
+begin
+	delete from friends where userID = userid;
+	delete from friends where userID = friendid;
+end@
+
+create procedure insertChallenge(fromid int, toid int, quizid int, mg text, fscore int)
+begin
+	insert into challenge(fromID, toID, quizID, msg, first_Score, second_Score, challenge_seen)
+	values(fromid, toid, quizid , mg, fscore, 0, 0);
+
+end@
