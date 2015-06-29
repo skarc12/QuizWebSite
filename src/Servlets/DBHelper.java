@@ -173,17 +173,38 @@ public class DBHelper {
 		return quiz;
 	}
 	//aq unda daabrunos tavisi sheqmnili quizebi
-	public static Quiz[] getRecentlyCreatedQuizes(){
+	public static Quiz[] getRecentlyCreatedQuizes(User user){
+		Quiz[] quizes = null;
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call recentCreatedQuizes(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet result = stm.executeQuery();
+			quizes = makeQuizObject(result);
+			stm.close();
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
-		return null;
+		return quizes;
 	}
 	//aq unda daabrunot tavisi gaketebuli quizebi
-	public static Quiz[] getRecentQuizActivities(){
+	public static Quiz[] getRecentQuizActivities(User user){
 		
 		return null;
 	}
 	//aq unda daabrunos tavisi sheqmnili quizebi, romelic vigacam gaiara bolos
-	public static Quiz[] getUserPlayedQuizes(){
+	public static Quiz[] getUserPlayedQuizes(User user){
 		return null;
 	}
 	//aq unda daabrunos message, romelic ger ar waukitxavs.. 

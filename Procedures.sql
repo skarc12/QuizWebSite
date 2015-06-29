@@ -60,8 +60,17 @@ end@
 drop procedure if exists getUserIDByUsername@
 create procedure getUserByUsername(uname varchar(100))
 begin
-	select * from users where  username = uname;
+	select ID from users where  username = uname;
 end@
 
 select * from messages@
-call getUnreadMessages(10)
+call getUnreadMessages(10)@
+
+drop procedure if exists recentCreatedQuizes@
+create procedure recentCreatedQuizes(userID int)
+begin
+	select * from quizes as a
+	where a.creatorID = userID
+	order by a.quiz_date desc
+	limit 2;
+end@
