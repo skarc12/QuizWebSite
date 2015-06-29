@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public class User {
+	int userID;
 	String firstname;
 	String lastname;
 	String email;
@@ -10,6 +11,17 @@ public class User {
 	String password;
 	ArrayList <User> friends;
 	
+	public User(String firstname, String lastname, String email,
+			String username, String password, int ID) {
+		super();
+		this.userID = ID;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		friends = new ArrayList<>();
+	}
 	public User(String firstname, String lastname, String email,
 			String username, String password) {
 		super();
@@ -31,6 +43,12 @@ public class User {
 		this.friends = friends;
 	}
 	
+	public int getUserID() {
+		return userID;
+	}
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
 	public String getURL(){
 		return "users/"+username;
 	}

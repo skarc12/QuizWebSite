@@ -46,4 +46,22 @@ begin
 		select * from question_answer
 		where questionID = questID;
 	end if;
-end
+end@
+
+drop procedure if exists getUnreadMessages@
+create procedure getUnreadMessages(userID int)
+begin
+	select fromID, toID, msg, seen from messages
+	where toID = userID
+	and seen = 0;
+
+end@
+
+drop procedure if exists getUserIDByUsername@
+create procedure getUserByUsername(uname varchar(100))
+begin
+	select * from users where  username = uname;
+end@
+
+select * from messages@
+call getUnreadMessages(10)
