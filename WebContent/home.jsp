@@ -15,6 +15,8 @@ if(user == null)
 	response.sendRedirect("index.html");
 else{
 	Message[] messages = DBHelper.getUserUnreadMessages(user.getUserID());
+	Challenge[] challenges = DBHelper.getUnseenChallenges(user);
+	FriendRequest[] friendRequest = DBHelper.getUnseenFriendRequest(user);
 	Quiz[] popQuizes = DBHelper.getPopularQuizes();
 	Quiz[] recentCreatedQuizes = DBHelper.getRecentlyCreatedQuizes(user);
 	Quiz[] recentQuizActivities = DBHelper.getRecentQuizActivities(user);
@@ -55,10 +57,21 @@ else{
 			<%} %>
 		</div>
 		<div id="challengeContainer" style="display: none">
-		
+			<%for(int i=0; i<challenges.length; i++){ %>
+			<div>
+				<input class="msgID" type="hidden" value="<%=challenges[i].getId() %>">
+				<h3><a href="quizPage.jsp?quizID=<%=challenges[i] %>"><%=challenges[i].getSender().getFirstname() + " " +challenges[i].getSender().getLastname() %></a></h3>
+				<h6><%=challenges[i].getMsg() %></h6>
+			</div>
+			<%} %>
 		</div>
 		<div id="friendRequestContainer" style="display: none">
-			
+			<%for(int i=0; i<friendRequest.length; i++){ %>
+			<div>
+				<input class="msgID" type="hidden" value="<%=friendRequest[i].getId() %>">
+				<h3><a href="<%=friendRequest[i].getSender() %>"><%=friendRequest[i].getSender().getFirstname() + " " +friendRequest[i].getSender().getLastname() %></a></h3>
+			</div>
+			<%} %>
 		</div>
 		
 		<div class="notifications">
@@ -85,20 +98,27 @@ else{
 			<fieldset style="display:inline-block">
 			<legend>Recent Created Quizes:</legend>
 			<%if(recentCreatedQuizes != null) for(int i=0; i<recentCreatedQuizes.length; i++){ %>
-				<div><%=recentCreatedQuizes[i].getQuizName() %></div>
+				<div><a href="quizPage.jsp?quizID=<%=recentCreatedQuizes[i].getID() %>"><%=recentCreatedQuizes[i].getQuizName() %></a></div>
 			<%} %>
 			</fieldset>
 			<fieldset style="display:inline-block">
 			<legend>Recent Quiz Activities:</legend>
 			<%if(recentQuizActivities != null) for(int i=0; i<recentQuizActivities.length; i++){ %>
-				<div><%=recentQuizActivities[i].getQuizName() %></div>
+				<div><a href="quizPage.jsp?quizID=<%=recentCreatedQuizes[i].getID() %>"><%=recentQuizActivities[i].getQuizName() %></a></div>
 			<%} %>
 			
 			</fieldset>
 			<fieldset style="display:inline-block">
 			<legend>User Played Quizes:</legend>
 			<%if(userPlayedQuizes != null) for(int i=0; i<userPlayedQuizes.length; i++){ %>
-				<div><%=userPlayedQuizes[i].getQuizName() %></div>
+				<div><a href="quizPage.jsp?quizID=<%=userPlayedQuizes[i].getID() %>"><%=userPlayedQuizes[i].getQuizName() %></a></div>
+			<%} %>
+			
+			</fieldset>
+			<fieldset style="display:inline-block">
+			<legend>Friends:</legend>
+			<%if(user.getFriends() != null) for(int i=0; i<user.getFriends().size(); i++){ %>
+				<div><a href="<%=user.getFriends().get(i).getURL()%>"><%=user.getFriends().get(i).toString() %></a></div>
 			<%} %>
 			
 			</fieldset>

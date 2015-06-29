@@ -60,7 +60,7 @@ begin
 
 end@
 
-drop procedure if exists getUserIDByUsername@
+drop procedure if exists getUserByUsername@
 create procedure getUserByUsername(uname varchar(100))
 begin
 	select ID from users where  username = uname;
@@ -108,7 +108,7 @@ drop procedure if exists getUnseenChallanges@
 create procedure getUnseenChallanges(usID int)
 begin
 	select * from challenge
-	where toID = userID
+	where toID = usID
 	and challenge_seen  = 0;
 end@
 
@@ -122,7 +122,7 @@ drop procedure if exists getUnseenFriendRequests@
 create procedure getUnseenFriendRequests(usID int)
 begin
 	select * from friendrequest
-	where toID = userID
+	where toID = usID
 	and seen  = 0;
 end@
 
@@ -182,6 +182,7 @@ begin
 	delete from friends where userID = friendid;
 end@
 
+drop procedure if exists insertChallenge@
 create procedure insertChallenge(fromid int, toid int, quizid int, mg text, fscore int)
 begin
 	insert into challenge(fromID, toID, quizID, msg, first_Score, second_Score, challenge_seen)
