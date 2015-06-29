@@ -413,7 +413,6 @@ public class DBHelper {
 				e.printStackTrace();
 			}
 		}
-		
 		return result;
 	}
 	
