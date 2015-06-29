@@ -7,7 +7,7 @@ public class test {
 		DBHelper manager = new DBHelper();
 		Message [] m = manager.getUserUnreadMessages(10);
 		for(int i = 0; i<m.length; i++){
-			System.out.println("gamomgzavni aris: " + m[i].getSender().getUserID());
+			System.out.println("gamomgzavni aris: " + m[i].getId());
 		}
 	}
 }

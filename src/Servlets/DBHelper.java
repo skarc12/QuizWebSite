@@ -154,6 +154,27 @@ public class DBHelper {
 		
 		
 	}
+	
+	public static void markMessageAsSeen(int msg){
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call changeSeen(?)}");
+			stm.setInt(1, msg);
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma gaaketa
 	public  static Quiz[] getPopularQuizes(){
 		Connection con;
@@ -173,17 +194,38 @@ public class DBHelper {
 		return quiz;
 	}
 	//aq unda daabrunos tavisi sheqmnili quizebi
-	public static Quiz[] getRecentlyCreatedQuizes(){
+	public static Quiz[] getRecentlyCreatedQuizes(User user){
+		Quiz[] quizes = null;
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call recentCreatedQuizes(?)}");
+			stm.setInt(1, user.getUserID());
+			ResultSet result = stm.executeQuery();
+			quizes = makeQuizObject(result);
+			stm.close();
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
-		return null;
+		return quizes;
 	}
-	//aq unda daabrunot tavisi gaketebuli quizebi
-	public static Quiz[] getRecentQuizActivities(){
+	//aq unda daabrunot tavisi natashebi quizebi
+	public static Quiz[] getRecentQuizActivities(User user){
 		
 		return null;
 	}
 	//aq unda daabrunos tavisi sheqmnili quizebi, romelic vigacam gaiara bolos
-	public static Quiz[] getUserPlayedQuizes(){
+	public static Quiz[] getUserPlayedQuizes(User user){
 		return null;
 	}
 	//aq unda daabrunos message, romelic ger ar waukitxavs.. 
@@ -200,12 +242,13 @@ public class DBHelper {
 			User sender = null;
 			User reciever = null;
 			while(set.next()){
+				int msgID = set.getInt("ID");
 				int from = set.getInt("fromID");
 				int to = userid;
 				String text = set.getString("msg");
 				sender = generateUser(from);
 				reciever = generateUser(to);
-				msg = new Message(sender, reciever, text, false);
+				msg = new Message(msgID,sender, reciever, text, false);
 				mess.add(msg);
 			}
 		}catch (ClassNotFoundException | InstantiationException
