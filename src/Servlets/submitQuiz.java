@@ -52,48 +52,51 @@ public class submitQuiz extends HttpServlet {
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 		List<Question> questions = quiz.getQuestions();
 		int correct = 0;
-		int all = 0;
 		for(int i=0; i<questions.size(); i++){
-			switch(questions.get(i).getType()){
-				case  QUESTION_ANSWER:{
-					QuestinAnswerQuestion q = (QuestinAnswerQuestion)questions.get(i);
-					if(answers.get(i).getAsString().equalsIgnoreCase(q.getAnswer())){
-						correct++;
-					}
-					all++;
-					break;
-				}
-				case MULTIPLE_CHOICE:{
-					MultipleChoiceQuestion q = (MultipleChoiceQuestion)questions.get(i);
-					if(answers.get(i).getAsString().equalsIgnoreCase(q.getCorrectAnswer())){
-						correct++;
-					}
-					all++;
-					break;
-				}
-				case PICTURE_QUIZ:{
-					PictureQuizQuestion q = (PictureQuizQuestion)questions.get(i);
-					if(answers.get(i).getAsString().equalsIgnoreCase(q.getAnswer())){
-						correct++;
-					}
-					all++;
-					break;
-				}
-				case FILL_THE_GAPS:{
-					FillTheGapsQuestion q = (FillTheGapsQuestion)questions.get(i);
-					JsonArray innerAnswers = answers.get(i).getAsJsonArray();
-					for(int j=0; j<innerAnswers.size(); j++){
-						if(q.getAnswers()[j].equalsIgnoreCase(innerAnswers.get(j).getAsString())){
-							correct++;
-						}
-						all++;
-					}
-					break;
-				}
-			}
+			correct += questions.get(i).checkAnswer(answers.get(i));
 		}
+//		int all = 0;
+//		for(int i=0; i<questions.size(); i++){
+//			switch(questions.get(i).getType()){
+//				case  QUESTION_ANSWER:{
+//					QuestinAnswerQuestion q = (QuestinAnswerQuestion)questions.get(i);
+//					if(answers.get(i).getAsString().equalsIgnoreCase(q.getAnswer())){
+//						correct++;
+//					}
+//					all++;
+//					break;
+//				}
+//				case MULTIPLE_CHOICE:{
+//					MultipleChoiceQuestion q = (MultipleChoiceQuestion)questions.get(i);
+//					if(answers.get(i).getAsString().equalsIgnoreCase(q.getCorrectAnswer())){
+//						correct++;
+//					}
+//					all++;
+//					break;
+//				}
+//				case PICTURE_QUIZ:{
+//					PictureQuizQuestion q = (PictureQuizQuestion)questions.get(i);
+//					if(answers.get(i).getAsString().equalsIgnoreCase(q.getAnswer())){
+//						correct++;
+//					}
+//					all++;
+//					break;
+//				}
+//				case FILL_THE_GAPS:{
+//					FillTheGapsQuestion q = (FillTheGapsQuestion)questions.get(i);
+//					JsonArray innerAnswers = answers.get(i).getAsJsonArray();
+//					for(int j=0; j<innerAnswers.size(); j++){
+//						if(q.getAnswers()[j].equalsIgnoreCase(innerAnswers.get(j).getAsString())){
+//							correct++;
+//						}
+//						all++;
+//					}
+//					break;
+//				}
+//			}
+//		}
 		
-		response.getOutputStream().print("{\"value\": \"correct "+correct+"/"+all+"\", \"url\": \"home.jsp\"}");
+		response.getOutputStream().print("{\"value\": \"correct "+correct+"\", \"url\": \"home.jsp\"}");
 		response.getOutputStream().flush();
 	}
 

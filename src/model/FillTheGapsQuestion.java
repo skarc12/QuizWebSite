@@ -1,5 +1,8 @@
 package model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
 public class FillTheGapsQuestion extends Question {
 	String question;
 	String[] answers;
@@ -39,6 +42,18 @@ public class FillTheGapsQuestion extends Question {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	@Override
+	public int checkAnswer(JsonElement elem) {
+		int count=0;
+		JsonArray arr = elem.getAsJsonArray();
+		for(int i=0; i<arr.size(); i++){
+			if(arr.get(i).getAsString().equalsIgnoreCase(answers[i])){
+				count++;
+			}
+		}
+		return count;
 	}
 	
 

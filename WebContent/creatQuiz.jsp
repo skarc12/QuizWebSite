@@ -83,9 +83,9 @@ if(user == null){
 	<legend>Quiz</legend>
 		<p>Enter Quiz name <input type="text" id="quizName"></p>
 		<p>Enter Quiz description <textarea id="quizDescription"></textarea></p>
-		<p><input type="checkbox" id="quizRandom"/>Random</p>
+		<!-- <p><input type="checkbox" id="quizRandom"/>Random</p>
 		<p><input type="checkbox" id="quizFeedback"/>Feedback</p>
-		<p><input type="checkbox" id="quizIsOnePage"/>Is One Page</p> 
+		<p><input type="checkbox" id="quizIsOnePage"/>Is One Page</p>  -->
 	</fieldset>
 	<fieldset id="questions">
 		<legend>Questions</legend>
