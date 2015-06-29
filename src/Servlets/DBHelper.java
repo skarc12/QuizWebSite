@@ -412,7 +412,7 @@ public class DBHelper {
 				boolean seen = set.getBoolean("challenge_seen");
 				sender = generateUser(from);
 				reciever = generateUser(to);
-				ch = new Challenge(challengeID, sender, reciever, firstScore, secondScore, text, seen);
+				ch = new Challenge(challengeID, sender, reciever, firstScore, secondScore, text, seen,quizID);
 				chall.add(ch);
 			}
 		} catch (ClassNotFoundException | InstantiationException
