@@ -108,7 +108,7 @@ drop procedure if exists getUnseenChallanges@
 create procedure getUnseenChallanges(usID int)
 begin
 	select * from challenge
-	where toID = userID
+	where toID = usID
 	and challenge_seen  = 0;
 end@
 
@@ -122,7 +122,7 @@ drop procedure if exists getUnseenFriendRequests@
 create procedure getUnseenFriendRequests(usID int)
 begin
 	select * from friendrequest
-	where toID = userID
+	where toID = usID
 	and seen  = 0;
 end@
 

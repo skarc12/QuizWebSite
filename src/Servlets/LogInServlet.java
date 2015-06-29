@@ -47,6 +47,7 @@ public class LogInServlet extends HttpServlet {
 		}else{
 			if(password.equals(user.getPassword())){
 				user.setFriends(DBHelper.getFriends(user));
+				System.out.println("user id: "+user.getUserID());
 				request.getSession().setAttribute("user", user);
 				response.sendRedirect("home.jsp");
 			}else{

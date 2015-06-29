@@ -12,6 +12,7 @@ if(user == null){
 }else{
 	String id = request.getParameter("quizID");
 	Quiz quiz = DBHelper.getQuizByID(Integer.parseInt(id));
+	ses.setAttribute("quiz", quiz);
 %>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
