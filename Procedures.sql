@@ -63,8 +63,6 @@ begin
 	select ID from users where  username = uname;
 end@
 
-select * from messages@
-call getUnreadMessages(10)@
 
 drop procedure if exists recentCreatedQuizes@
 create procedure recentCreatedQuizes(userID int)
@@ -79,5 +77,17 @@ drop procedure if exists changeSeen@
 create procedure changeSeen(msgID int)
 begin
 	UPDATE messages SET seen = 1 WHERE ID = msgID;
-end
+end@
+-- unda daabrunos si qvizebi romlebi userID-m sheqmna da tan bolos itamasha es qvizebi vigaceebma
+-- anu bolos natamashebi am useris mier sheyqmnili qvizebi
+create procedure recentlyPlayedQuizes(useID int)
+begin
 
+	select b.*,a.quiz_name from quizes as a, take_quize as b
+	where a.creatorID = 9
+	and a.ID = b.quizID
+	order by b.take_tike desc
+	limit 2;
+
+
+end

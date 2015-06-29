@@ -155,13 +155,13 @@ public class DBHelper {
 		
 	}
 	
-	public static void markMessageAsSeen(Message msg){
+	public static void markMessageAsSeen(int msg){
 		Connection con = null;
 		CallableStatement stm;
 		try {
 			con = DBConnection.initConnection();
 			stm = con.prepareCall("{call changeSeen(?)}");
-			stm.setInt(1, msg.getId());
+			stm.setInt(1, msg);
 			stm.execute();
 		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -219,7 +219,7 @@ public class DBHelper {
 		
 		return quizes;
 	}
-	//aq unda daabrunot tavisi gaketebuli quizebi
+	//aq unda daabrunot tavisi natashebi quizebi
 	public static Quiz[] getRecentQuizActivities(User user){
 		
 		return null;
