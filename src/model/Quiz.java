@@ -85,5 +85,18 @@ public class Quiz {
 		this.date = date;
 	}
 	
+	
+	public static class QuizHandle{
+		public int ID;
+		public String name;
+		public int score;
+		public QuizHandle(int iD, String name, int score) {
+			super();
+			ID = iD;
+			this.name = name;
+			this.score = score;
+		}
+		
+	}
 
 }
