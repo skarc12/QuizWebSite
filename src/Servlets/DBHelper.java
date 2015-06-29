@@ -154,6 +154,27 @@ public class DBHelper {
 		
 		
 	}
+	
+	public static void markMessageAsSeen(Message msg){
+		Connection con = null;
+		CallableStatement stm;
+		try {
+			con = DBConnection.initConnection();
+			stm = con.prepareCall("{call changeSeen(?)}");
+			stm.setInt(1, msg.getId());
+			stm.execute();
+		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	// ese igi aq unda daabrunos qizebis masivi, romelic yvelaze metma userma gaaketa
 	public  static Quiz[] getPopularQuizes(){
 		Connection con;
@@ -221,12 +242,13 @@ public class DBHelper {
 			User sender = null;
 			User reciever = null;
 			while(set.next()){
+				int msgID = set.getInt("ID");
 				int from = set.getInt("fromID");
 				int to = userid;
 				String text = set.getString("msg");
 				sender = generateUser(from);
 				reciever = generateUser(to);
-				msg = new Message(sender, reciever, text, false);
+				msg = new Message(msgID,sender, reciever, text, false);
 				mess.add(msg);
 			}
 		}catch (ClassNotFoundException | InstantiationException

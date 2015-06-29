@@ -51,7 +51,7 @@ end@
 drop procedure if exists getUnreadMessages@
 create procedure getUnreadMessages(userID int)
 begin
-	select fromID, toID, msg, seen from messages
+	select ID, fromID, toID, msg, seen from messages
 	where toID = userID
 	and seen = 0;
 
@@ -74,3 +74,10 @@ begin
 	order by a.quiz_date desc
 	limit 2;
 end@
+
+drop procedure if exists changeSeen@
+create procedure changeSeen(msgID int)
+begin
+	UPDATE messages SET seen = 1 WHERE ID = msgID;
+end
+
