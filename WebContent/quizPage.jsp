@@ -20,9 +20,7 @@ Quiz quiz = (Quiz) ses.getAttribute("quiz");
 		<h1><%=quiz.getQuizName() %></h1>
 		<h3><%=quiz.getDescription() %></h3>
 		<h5><a href="<%=quiz.getOwnes().getURL()%>"><%=quiz.getOwnes().getUsername() %></a></h5>
-		<%if(!quiz.isOnePage()){
-			
-		}else {
+		<%
 			for(int i=0; i<quiz.getQuestions().size(); i++){
 				%>
 				<fieldset class="question">
@@ -69,7 +67,6 @@ Quiz quiz = (Quiz) ses.getAttribute("quiz");
 			}
 			%>
 			<button onclick="submitQuiz(this)">OK</button>
-		<% } %>
 	</body>
 	<script>
 	var bla;

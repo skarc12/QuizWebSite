@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.JsonElement;
+
 
 public abstract class Question {
 	QuestionType type;
@@ -18,6 +20,6 @@ public abstract class Question {
 	public void setType(QuestionType type) {
 		this.type = type;
 	}
-	
+	public abstract int checkAnswer(JsonElement elem);
 	
 }

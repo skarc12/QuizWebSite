@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.JsonElement;
+
 public class MultipleChoiceQuestion extends Question {
 	String question;
 	String[] answers;
@@ -72,6 +74,11 @@ public class MultipleChoiceQuestion extends Question {
 
 	public void setScore(int point) {
 		this.score = point;
+	}
+
+	@Override
+	public int checkAnswer(JsonElement elem) {
+		return elem.getAsString().equalsIgnoreCase(correctAnswer) ? 1 : 0;
 	}
 	
 
