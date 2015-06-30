@@ -20,7 +20,7 @@ if(user == null){
 </head>
 <body>
 	<fieldSet>
-	<p>mokled aq shemovida da daabrunaa es userebi</p>
+	<p>Find User</p>
 	<%
 		User [] users =(User[]) request.getAttribute("users");
 		for(int i=0; i<users.length; i++){
