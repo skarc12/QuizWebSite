@@ -73,7 +73,7 @@ begin
 	select * from quizes as a
 	where a.creatorID = userID
 	order by a.quiz_date desc
-	limit 2;
+	limit 5;
 end@
 
 drop procedure if exists changeSeen@
@@ -190,20 +190,21 @@ begin
 
 end@
 
-
+drop procedure if exists insertIntoQuestions@
 create procedure insertIntoQuestions(catId int, quizid int)
 begin
 	insert into questions(question_categoryID, quizID)
 	values(catId, quizid);
-	select Max(ID) from questions;
+	select Max(ID) as ID from questions;
 end@
-
+drop procedure if exists insertQuiz@
 create procedure insertQuiz(creatorid int ,qname varchar(100),descript varchar(100), createDate datetime)
 begin
 	insert into quizes(creatorID, quiz_name, description, quiz_date)
 	values(creatorid, qname, descript, createDate);
-	select Max(ID) from quizes;
+	select Max(ID) as ID from quizes;
 end@
+drop procedure if exists insertIntoMultChoice@
 
 create procedure insertIntoMultChoice(quest varchar(500), quizid int, answ1 varchar(100), answ2 varchar(100),
 										answ3 varchar(100), answ4 varchar(100), corr_answ varchar(100), questid int)
@@ -211,6 +212,31 @@ begin
 	insert into multiple_choice(question,quizID,answer1,answer2,answer3,answer4,correct_answer,questionID)
 	values(quest, quizid, answ1, answ2, answ3, answ4, corr_answ, questid);
 end@
+drop procedure if exists insertIntoPictQuez@
+
+create procedure insertIntoPictQuez(link varchar(500), answ varchar(90), quizid int, questid int)
+begin
+	insert into picture_quiz(url,answer,quizID,questionID)
+	values(link, answ, quizid, questid);
+end@
 
 
+drop procedure if exists insertIntoQuestAnswer@
 
+create procedure insertIntoQuestAnswer(quest varchar(500), answ varchar(100), quizid int, questid int )
+begin
+	insert into question_answer (question,answer,quizID,questionID)
+	values();
+end@
+
+
+drop procedure if exists insertIntoFillTheGaps@
+
+create procedure insertIntoFillTheGaps(quest varchar(500), answ varchar(500), num int, quizid int, questid int)
+begin
+	insert into fill_the_gaps (question,answer,num_of_answers,quizID,questionID)
+	values(quest, answ, num, quizid, questid);
+end@
+
+
+select * from multiple_choice;

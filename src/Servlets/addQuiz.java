@@ -107,7 +107,7 @@ public class addQuiz extends HttpServlet {
 			}
 		}
 		quizObj.setOwnes((User)request.getSession().getAttribute("user"));
-		//DBHeler.addQuiz(quizObj);
+		DBHelper.addQuizIntoDatabase(quizObj);
 		System.out.println("name: "+quizObj.getQuizName());
 		System.out.println("random: "+quizObj.isRandom());
 		response.getOutputStream().print("home.jsp");
