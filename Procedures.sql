@@ -252,3 +252,13 @@ begin
 	where username LIKE CONCAT('%', str, '%');
 
 end@
+
+
+
+create procedure inserIntoQuiz_take(quizid int, useid int, pnt int, take_time datetime)
+begin
+	insert into quiz_date(quizID,userID,score,take_tike)
+	values(quizid,useid,pnt,take_time);
+end@
+
+
