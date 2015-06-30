@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Paroli;
 import model.Quiz;
 import model.User;
 
@@ -38,8 +39,10 @@ public class LogInServlet extends HttpServlet {
 	 */
 	@SuppressWarnings("deprecation")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Paroli p = new Paroli();
 		String username = request.getParameter("login");
 		String password = request.getParameter("password");
+		password = p.generateHashedPassword(password);
 		DBHelper manager = new DBHelper();
 		User user = manager.findUser(username);
 		if(user == null){

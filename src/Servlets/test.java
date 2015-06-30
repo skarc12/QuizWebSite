@@ -1,6 +1,7 @@
 package Servlets;
 
 import model.Message;
+import model.Paroli;
 import model.Quiz;
 import model.User;
 
@@ -11,6 +12,8 @@ public class test {
 //		System.out.println(user.getUserID());
 //		manager.addFriend(user, "caleb");
 		String k = "salomesalome";
-		System.out.println(k.substring(0,5));
+		Paroli a = new Paroli();
+		k = a.generateHashedPassword(k);
+		System.out.println(k);
 	}
 }
