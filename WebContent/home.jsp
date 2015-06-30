@@ -63,15 +63,15 @@ else{
 				<input class="msgIDChallenge" type="hidden" value="<%=challenges[i].getId() %>">
 				<h3><a href="<%=challenges[i].getSender().getURL()%>"><%=challenges[i].getSender().getFirstname() + " " +challenges[i].getSender().getLastname() %></a></h3>
 				<a href="quizPage.jsp?quizID=<%=challenges[i].getQuizid() %>">get Quiz</a>
-				<h6><%=challenges[i].getMsg() %></h6>
+				<h3><%=challenges[i].getMsg() %></h3>
 			</div>
 			<%} %>
 		</div>
 		<div id="friendRequestContainer" style="display: none">
 			<%for(int i=0; i<friendRequest.length; i++){ %>
 			<div>
-				<input class="msgID" type="hidden" value="<%=friendRequest[i].getId() %>">
-				<h3><a href="<%=friendRequest[i].getSender() %>"><%=friendRequest[i].getSender().getFirstname() + " " +friendRequest[i].getSender().getLastname() %></a></h3>
+				<input class="msgIDRequest" type="hidden" value="<%=friendRequest[i].getId() %>">
+				<h3><a href="<%=friendRequest[i].getSender().getURL() %>"><%=friendRequest[i].getSender().getFirstname() + " " +friendRequest[i].getSender().getLastname() %></a></h3>
 			</div>
 			<%} %>
 		</div>
@@ -158,15 +158,23 @@ function showChallenges(){
 	 $.ajax({
 		url:"clearNotifications",
 		type:"post",
-		data: "challenges"
+		data: JSON.stringify(data)
 	}); 
 	$("#notificationContainer").html($("#challengeContainer").html());
 }
 function showFriendRequests(){
+	var arr = [];
+	$.each($(".msgIDRequest"), function (i, e){
+		arr.push($(e).val());
+	});
+	var data={
+			action: "friendRequests",
+			ids :arr
+	};
 	$("#notificationContainer").html($("#friendRequestContainer").html());$.ajax({
 		url: "clearNotifications",
 		type: "post",
-		data: "friendRequests"
+		data: JSON.stringify(data)
 	});
 }
 </script>
