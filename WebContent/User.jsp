@@ -82,6 +82,7 @@ function search(){
 					
 				
 				</select>
+				<!-- mokled aqqq tu ar qnaa shevcvaloo-->
 				<input class="ownScore" type="hidden" value="<%=quizes[i].score%>"/>
 				<%} %>
 				<textarea id="challengeText" rows="3" cols="30"></textarea>

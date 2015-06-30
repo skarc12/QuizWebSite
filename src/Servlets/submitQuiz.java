@@ -1,6 +1,7 @@
 package Servlets;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import model.PictureQuizQuestion;
 import model.QuestinAnswerQuestion;
 import model.Question;
 import model.Quiz;
+import model.User;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -46,6 +48,8 @@ public class submitQuiz extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Date Date =new Date(new java.util.Date().getTime());
+		User user =(User) request.getSession().getAttribute("user");
 		String json = addQuiz.readAll(request.getInputStream());
 		System.out.println(json);
 		JsonArray answers = new JsonParser().parse(json).getAsJsonArray();
@@ -95,7 +99,7 @@ public class submitQuiz extends HttpServlet {
 //				}
 //			}
 //		}
-		
+		DBHelper.playQuiz(user, quiz, correct, Date);
 		response.getOutputStream().print("{\"value\": \"correct "+correct+"\", \"url\": \"home.jsp\"}");
 		response.getOutputStream().flush();
 	}

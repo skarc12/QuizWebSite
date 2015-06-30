@@ -21,6 +21,7 @@ else{
 	Quiz[] recentCreatedQuizes = DBHelper.getRecentlyCreatedQuizes(user);
 	Quiz[] recentQuizActivities = DBHelper.getRecentQuizActivities(user);
 	Quiz[] userPlayedQuizes = DBHelper.getUserPlayedQuizes(user);
+	//User[] search = DBHelper.searchUsers("");
 %>
 	<head>
 		<title>Quiz Website</title>
