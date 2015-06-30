@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 import model.Challenge;
 import model.FillTheGapsQuestion;
 import model.FriendRequest;
@@ -815,6 +816,8 @@ public class DBHelper {
 	}
 
 	public static void addQuizIntoDatabase(Quiz quiz) {
+		long time = System.currentTimeMillis();
+		java.sql.Timestamp timestamp = new java.sql.Timestamp(time);
 		Date createTime = quiz.getDate();
 		String descrpt = quiz.getDescription();
 		User owner = quiz.getOwnes();
@@ -828,7 +831,7 @@ public class DBHelper {
 			stm.setInt(1, owner.getUserID());
 			stm.setString(2, name);
 			stm.setString(3, descrpt);
-			stm.setDate(4, createTime);
+			stm.setTimestamp(4, timestamp);
 			int quizid = 0;
 			int questionID = 0;
 			ResultSet set = stm.executeQuery();
@@ -977,8 +980,8 @@ public class DBHelper {
 		User [] answer = new User[users.size()];
 		return users.toArray(answer);
 	}
-	public static void playQuiz(User user, Quiz q, int point, java.sql.Date took_time){
-		System.out.println("shemovida");
+	public static void playQuiz(User user, Quiz q, int point, java.sql.Timestamp took_time){
+		System.out.println(took_time);
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
@@ -993,7 +996,7 @@ public class DBHelper {
 			System.out.println("shemovida4");
 			stm.setInt(3, point);;
 			System.out.println("shemovida5");
-			stm.setDate(4, took_time);
+			stm.setTimestamp(4, took_time);
 			System.out.println("shemovida6");
 			stm.execute();
 

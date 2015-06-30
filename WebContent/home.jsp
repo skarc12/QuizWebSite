@@ -37,8 +37,8 @@ else{
 		<div class = "headerMenu" size = "60">
 			<div class = "search-box">
 
-				<form action="search.php" method = "GET" id = "search">
-					<input type = "text" name="q" size="60" placeholder="Search ...">
+				<form action="search" method = "GET" id = "search">
+					<input id="searchForm" type = "text" name="q" size="60" placeholder="Search ...">
 				</form>
 				<a href="https://instagram.com/"><img class = "link" src="./img/2.png"></a>
 				<p class="out"><a href="SignOutServlet">Sing Out</a></p>
