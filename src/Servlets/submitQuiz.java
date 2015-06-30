@@ -49,6 +49,7 @@ public class submitQuiz extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Date Date =new Date(new java.util.Date().getTime());
+		System.out.println(Date);
 		User user =(User) request.getSession().getAttribute("user");
 		String json = addQuiz.readAll(request.getInputStream());
 		System.out.println(json);

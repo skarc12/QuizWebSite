@@ -37,12 +37,12 @@ function search(){
 	window.location.replace("search.jsp?query="+$("#searchField").val());
 }
 </script>
-				<form action="search.jsp" method = "GET" id = "search">
-					<input id="searchField" type = "text" name="q" size="60" placeholder="Search ...">
+				<form action="search" method = "GET" id = "search">
+					<input id="searchForm" type = "text" name="q" size="60" placeholder="Search ...">
 				</form>
-				<a onclick="search()"><img class = "link" src="./img/2.png"></a>
+				<a onclick="$('#search').submit()"><img class = "link" src="./img/2.png" ></a>
 				<p class="out"><a href="SignOutServlet">Sing Out</a></p>
-				<p><a href="home.jsp"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
+				<p><a href="home.jsp"><%=user.getFirstname()%> <%=user.getLastname()%></a></p>
 				<a href="home.jsp"><img class = "user" src="./img/user.jpg"></a>
 				
 			</div>
@@ -137,7 +137,12 @@ function SendChalenge(){
 		}
 	});
 }
-
+function search(){
+	var request={};
+	request.action = "";
+	
+	
+}
 </script>
 
 <%} }%>
