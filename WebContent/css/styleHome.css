@@ -1,11 +1,12 @@
 body{
-	background: url(../img/good.png) ;
+	background: url(../img/aa.jpg) ;
 }
 .hello{
 	position: fixed;
 	top:70px;
 	width: 180px;
 	height: 90px;
+	margin-left:1000px;
 }
 h2{
 	font-family: Sans-serif;
@@ -20,6 +21,7 @@ h2{
 	position: fixed;
 	top:127px;
 	left: 42px;
+	margin-left:1000px;
 }
 .search-box{
 	position: absolute;
@@ -81,5 +83,8 @@ p{
 	background:#dceefc ;
 	color: #6a6f75;
 	width: 700px;
+	
+}
+.notifications{
 	
 }

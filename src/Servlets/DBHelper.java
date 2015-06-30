@@ -701,7 +701,7 @@ public class DBHelper {
 		return questslist.toArray(result);
 	}
 
-	private static ArrayList<Question> getQuestions(int id) throws Exception {
+	public static ArrayList<Question> getQuestions(int id) throws Exception {
 		ArrayList<Question> quests = new ArrayList<Question>();
 		Connection con = DBConnection.initConnection();
 		CallableStatement stm = con.prepareCall("{call getQuestionIDs(?)}");
