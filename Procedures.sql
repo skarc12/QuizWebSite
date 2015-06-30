@@ -262,3 +262,8 @@ begin
 end@
 
 
+create procedure getAllQuizesCreatedByUser(id int)
+begin
+	select * from quizes where creatorID = id;
+end@
+

@@ -999,4 +999,28 @@ public class DBHelper {
 			e.printStackTrace();
 		}
 	}
+	public static Quiz [] getAllQsCreatedByUser(User user){
+		Quiz[] q = null;
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call getAllQuizesCreatedByUser(?)}");
+			stm.setInt(1, user.getUserID());
+			
+			ResultSet res = stm.executeQuery();
+			if(res!=null){
+				q = makeQuizObject(res);
+			}
+		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return q;
+	}
 }
