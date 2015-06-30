@@ -238,9 +238,12 @@ begin
 end@
 
 
-create procedure senMessage(fromid int, toid int, msg text)
+create procedure sendMessage(fromid int, toid int, msg text)
 begin
 	insert into messages(fromID,toID,msg,seen)
 	values(fromid, toid, msg, 0);
 
 end@
+
+
+select * from messages;

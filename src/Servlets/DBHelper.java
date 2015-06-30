@@ -932,9 +932,11 @@ public class DBHelper {
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
-			CallableStatement stm = con.prepareCall("{call senMessage(?,?,?)}");
+			CallableStatement stm = con.prepareCall("{call sendMessage(?,?,?)}");
 			stm.setInt(1, from.getUserID());
+			System.out.println(from.getUserID());
 			stm.setInt(2, findUser(to).getUserID());
+			System.out.println(findUser(to).getUserID());
 			stm.setString(3, msg);
 			stm.execute();
 
