@@ -52,8 +52,9 @@ public class userManager extends HttpServlet {
 			DBHelper.addFriend(user,obj.get("username").getAsString());
 			response.getOutputStream().print("Unfriend");
 		} else if(action.equals("sendMessage")){
-			
-			//send message DBHelper.send
+			System.out.println(obj.get("username").getAsString());
+			System.out.println(obj.get("msg").getAsString());
+			DBHelper.addMessage(user,obj.get("username").getAsString(), obj.get("msg").getAsString() );
 		} else if(action.equals("sendChallenge")){
 			obj.get("username").getAsString();
 			obj.get("ownScore").getAsInt();
