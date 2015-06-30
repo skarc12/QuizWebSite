@@ -237,7 +237,7 @@ begin
 	values(quest, answ, num, quizid, questid);
 end@
 
-
+drop procedure if exists sendMessage@
 create procedure sendMessage(fromid int, toid int, msg text)
 begin
 	insert into messages(fromID,toID,msg,seen)
@@ -245,5 +245,10 @@ begin
 
 end@
 
+drop procedure if exists search@
+create procedure search(str text)
+begin
+	select * from users
+	where username LIKE CONCAT('%', str, '%');
 
-select * from messages;
+end@
