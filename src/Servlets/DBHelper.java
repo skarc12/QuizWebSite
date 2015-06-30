@@ -3,7 +3,6 @@ package Servlets;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +10,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import model.Challenge;
 import model.FillTheGapsQuestion;
@@ -44,14 +42,7 @@ public class DBHelper {
 			stm.setString(5, password);
 			stm.execute();
 			stm.close();
-			/*
-			 * String update =
-			 * "Insert into users(first_name, last_name, username, email, password) values("
-			 * + "'" + name + "','" + lastname + "','" + username + "','" +
-			 * email + "','" + password + "');";
-			 * 
-			 * stmt.executeUpdate(update);
-			 */
+			
 			CallableStatement stmt = con
 					.prepareCall("{call getUserByUsername(?)}");
 			stmt.setString(1, username);
@@ -783,7 +774,6 @@ public class DBHelper {
 		List<String> a = new ArrayList<>();
 		String[] answers = new String[numOfAnswers];
 		int fromIndex = 0, endIndex = 0;
-		String ans;
 		while (numOfAnswers != 0) {
 			endIndex = answer.indexOf("#", fromIndex);
 			a.add(answer.substring(fromIndex, endIndex + 1));
@@ -950,5 +940,33 @@ public class DBHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public static ArrayList<User> searchUsers(String text){
+		Connection con = null;
+		ArrayList<User> users = new ArrayList<>();
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call search(?)}");
+			stm.setString(1, text);
+			ResultSet res= stm.executeQuery();
+			int userID;
+			User user;
+			while(res.next()){
+				userID = res.getInt("ID");
+				user = generateUser(userID);
+				users.add(user);
+			}
+
+		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return users;
 	}
 }
