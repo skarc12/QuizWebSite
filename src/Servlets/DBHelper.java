@@ -53,7 +53,7 @@ public class DBHelper {
 			 * stmt.executeUpdate(update);
 			 */
 			CallableStatement stmt = con
-					.prepareCall("{call getUserIDByUsername(?)}");
+					.prepareCall("{call getUserByUsername(?)}");
 			stmt.setString(1, username);
 			ResultSet set = stmt.executeQuery();
 			int userID = 0;
