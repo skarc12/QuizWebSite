@@ -6,9 +6,11 @@ import model.User;
 
 public class test {
 	public static void main(String[] args) {
-		DBHelper manager = new DBHelper();
-		User user= DBHelper.findUser("bidza");
-		System.out.println(user.getUserID());
-		manager.addFriend(user, "caleb");
+//		DBHelper manager = new DBHelper();
+//		User user= DBHelper.findUser("bidza");
+//		System.out.println(user.getUserID());
+//		manager.addFriend(user, "caleb");
+		String k = "salomesalome";
+		System.out.println(k.substring(0,5));
 	}
 }

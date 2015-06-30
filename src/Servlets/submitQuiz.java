@@ -48,7 +48,7 @@ public class submitQuiz extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Date Date =new Date(new java.util.Date().getTime());
+		Date date =new Date(new java.util.Date().getTime());
 		User user =(User) request.getSession().getAttribute("user");
 		String json = addQuiz.readAll(request.getInputStream());
 		System.out.println(json);
@@ -99,7 +99,7 @@ public class submitQuiz extends HttpServlet {
 //				}
 //			}
 //		}
-		DBHelper.playQuiz(user, quiz, correct, Date);
+		DBHelper.playQuiz(user, quiz, correct, date);
 		response.getOutputStream().print("{\"value\": \"correct "+correct+"\", \"url\": \"home.jsp\"}");
 		response.getOutputStream().flush();
 	}
