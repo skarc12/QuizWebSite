@@ -226,7 +226,7 @@ drop procedure if exists insertIntoQuestAnswer@
 create procedure insertIntoQuestAnswer(quest varchar(500), answ varchar(100), quizid int, questid int )
 begin
 	insert into question_answer (question,answer,quizID,questionID)
-	values();
+	values(quest, answ, quizid, questid);
 end@
 
 

@@ -42,7 +42,14 @@ public class DBHelper {
 			stm.setString(5, password);
 			stm.execute();
 			stm.close();
-			
+			/*
+			 * String update =
+			 * "Insert into users(first_name, last_name, username, email, password) values("
+			 * + "'" + name + "','" + lastname + "','" + username + "','" +
+			 * email + "','" + password + "');";
+			 * 
+			 * stmt.executeUpdate(update);
+			 */
 			CallableStatement stmt = con
 					.prepareCall("{call getUserByUsername(?)}");
 			stmt.setString(1, username);
@@ -824,10 +831,10 @@ public class DBHelper {
 			stm.setDate(4, createTime);
 			int quizid = 0;
 			int questionID = 0;
-			;
 			ResultSet set = stm.executeQuery();
 			while (set.next()) {
 				quizid = set.getInt("ID");
+				System.out.println("quiz id"+quizid);
 				QuestionType type;
 				for (int i = 0; i < questions.size(); i++) {
 					type = questions.get(i).getType();
@@ -941,7 +948,7 @@ public class DBHelper {
 			e.printStackTrace();
 		}
 	}
-	public static ArrayList<User> searchUsers(String text){
+	public static User [] searchUsers(String text){
 		Connection con = null;
 		ArrayList<User> users = new ArrayList<>();
 		try {
@@ -967,6 +974,7 @@ public class DBHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return users;
+		User [] answer = new User[users.size()];
+		return users.toArray(answer);
 	}
 }
