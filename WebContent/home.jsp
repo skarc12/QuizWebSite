@@ -60,8 +60,9 @@ else{
 		<div id="challengeContainer" style="display: none">
 			<%for(int i=0; i<challenges.length; i++){ %>
 			<div>
-				<input class="msgID" type="hidden" value="<%=challenges[i].getId() %>">
-				<h3><a href="quizPage.jsp?quizID=<%=challenges[i] %>"><%=challenges[i].getSender().getFirstname() + " " +challenges[i].getSender().getLastname() %></a></h3>
+				<input class="msgIDChallenge" type="hidden" value="<%=challenges[i].getId() %>">
+				<h3><a href="<%=challenges[i].getSender().getURL()%>"><%=challenges[i].getSender().getFirstname() + " " +challenges[i].getSender().getLastname() %></a></h3>
+				<a href="quizPage.jsp?quizID=<%=challenges[i].getQuizid() %>">get Quiz</a>
 				<h6><%=challenges[i].getMsg() %></h6>
 			</div>
 			<%} %>
@@ -105,7 +106,7 @@ else{
 			<fieldset style="display:inline-block">
 			<legend>Recent Quiz Activities:</legend>
 			<%if(recentQuizActivities != null) for(int i=0; i<recentQuizActivities.length; i++){ %>
-				<div><a href="quizPage.jsp?quizID=<%=recentCreatedQuizes[i].getID() %>"><%=recentQuizActivities[i].getQuizName() %></a></div>
+				<div><a href="quizPage.jsp?quizID=<%=recentQuizActivities[i].getID() %>"><%=recentQuizActivities[i].getQuizName() %></a></div>
 			<%} %>
 			
 			</fieldset>
@@ -146,11 +147,20 @@ function showMessages(){
 	$("#notificationContainer").html($("#messageContainer").html());
 }
 function showChallenges(){
-	$("#notificationContainer").html($("#challengeContainer").html());$.ajax({
-		url: "clearNotifications",
-		type: "post",
-		data: "challenges"
+	var arr = [];
+	$.each($(".msgIDChallenge"), function (i, e){
+		arr.push($(e).val());
 	});
+	var data={
+			action: "challenges",
+			ids :arr
+	};
+	 $.ajax({
+		url:"clearNotifications",
+		type:"post",
+		data: "challenges"
+	}); 
+	$("#notificationContainer").html($("#challengeContainer").html());
 }
 function showFriendRequests(){
 	$("#notificationContainer").html($("#friendRequestContainer").html());$.ajax({

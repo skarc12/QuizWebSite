@@ -78,13 +78,11 @@ function search(){
 				QuizHandle[] quizes = DBHelper.getAllQuizes(user);
 				for(int i=0; i<quizes.length; i++){
 				%>
-					<option value="<%=quizes[i].ID %>"><%=quizes[i].name %></option>
-					<input class="ownScore" type="hidden" value="<%=quizes[i].score%>"/>
-				
-				</select>
+					<option data-score="<%=quizes[i].score%>" value="<%=quizes[i].ID %>"><%=quizes[i].name %></option>				
 				<!-- mokled aqqq tu ar qnaa shevcvaloo-->
 				
 				<%} %>
+				</select>
 				<textarea id="challengeText" rows="3" cols="30"></textarea>
 				<button onclick="SendChalenge()">Send</button>
 			</fieldset>
@@ -126,14 +124,16 @@ function SendChalenge(){
 	request.action = "sendChallenge";
 	request.username =$("#username").html();
 	request.quizID = $("#challenge").val();
-	request.ownScore = $("#challenge").find(".ownScore").val();
+	request.ownScore = $("#challenge option:selected").data('score');
 	request.message = $("#challengeText").val();
+	console.log(request);
 	$.ajax({
 		url: "userManager",
 		type: "post",
 		data: JSON.stringify(request),
 		success: function(content){
 			alert("Challenge Sent");
+			$('#challengeText').val('');
 		}
 	});
 }
