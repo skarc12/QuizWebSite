@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Paroli;
 import model.User;
 
 
@@ -44,12 +45,13 @@ public class registrationServlet extends HttpServlet {
 		System.out.print("hom");
 		
 		 
-		
+		Paroli p = new Paroli();
 		String name = request.getParameter("FirstName");
 		String lastname = request.getParameter("LastName");
 		String email = request.getParameter("Mail");
 		String username = request.getParameter("UserName");
 		String password = request.getParameter("Password");
+		password= p.generateHashedPassword(password);
 		DBHelper a =  new DBHelper();
 		boolean bol = a.exists(username);
 		if(bol == false){
