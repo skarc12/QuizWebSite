@@ -928,5 +928,25 @@ public class DBHelper {
 		}
 
 	}
+	public static void addMessage(User from, String to, String msg){
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call senMessage(?,?,?)}");
+			stm.setInt(1, from.getUserID());
+			stm.setInt(2, findUser(to).getUserID());
+			stm.setString(3, msg);
+			stm.execute();
 
+		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

@@ -55,6 +55,10 @@ public class userManager extends HttpServlet {
 			
 			//send message DBHelper.send
 		} else if(action.equals("sendChallenge")){
+			obj.get("username").getAsString();
+			obj.get("ownScore").getAsInt();
+			obj.get("quizID").getAsInt();
+			obj.get("message").getAsString();
 			DBHelper.sendChallenge(user, obj.get("username").getAsString(), obj.get("ownScore").getAsInt(), obj.get("quizID").getAsInt(), obj.get("message").getAsString());
 		}
 	}

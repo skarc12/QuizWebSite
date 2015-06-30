@@ -231,7 +231,6 @@ end@
 
 
 drop procedure if exists insertIntoFillTheGaps@
-
 create procedure insertIntoFillTheGaps(quest varchar(500), answ varchar(500), num int, quizid int, questid int)
 begin
 	insert into fill_the_gaps (question,answer,num_of_answers,quizID,questionID)
@@ -239,4 +238,9 @@ begin
 end@
 
 
-select * from multiple_choice;
+create procedure senMessage(fromid int, toid int, msg text)
+begin
+	insert into messages(fromID,toID,msg,seen)
+	values(fromid, toid, msg, 0);
+
+end@
