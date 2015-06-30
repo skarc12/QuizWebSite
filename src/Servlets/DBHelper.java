@@ -780,11 +780,11 @@ public class DBHelper {
 		int numOfAnswers = set.getInt("num_of_answers");
 		List<String> a = new ArrayList<>();
 		String[] answers = new String[numOfAnswers];
-		int fromIndex = 0, endIndex = 0;
+		int fromIndex = 0, size = 0;
 		while (numOfAnswers != 0) {
-			endIndex = answer.indexOf("#", fromIndex);
-			a.add(answer.substring(fromIndex, endIndex + 1));
-			fromIndex = endIndex;
+			size = answer.indexOf("#", fromIndex)+1;
+			a.add(answer.substring(fromIndex, size));
+			fromIndex = size;
 			numOfAnswers--;
 		}
 		Question question = new FillTheGapsQuestion(questionText,
@@ -978,14 +978,23 @@ public class DBHelper {
 		return users.toArray(answer);
 	}
 	public static void playQuiz(User user, Quiz q, int point, java.sql.Date took_time){
+		System.out.println("shemovida");
 		Connection con = null;
 		try {
 			con = DBConnection.initConnection();
+			System.out.println("shemovida1");
 			CallableStatement stm = con.prepareCall("{call inserIntoQuiz_take(?,?,?,?)}");
-			stm.setInt(1, user.getUserID());
-			stm.setInt(2, q.getID());
+			
+			stm.setInt(1, q.getID());
+			System.out.println("shemovida2");
+			stm.setInt(2, user.getUserID());
+			System.out.println("shemovida3");
+			
+			System.out.println("shemovida4");
 			stm.setInt(3, point);;
+			System.out.println("shemovida5");
 			stm.setDate(4, took_time);
+			System.out.println("shemovida6");
 			stm.execute();
 
 		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
@@ -998,5 +1007,29 @@ public class DBHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public static Quiz [] getAllQsCreatedByUser(User user){
+		Quiz[] q = null;
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call getAllQuizesCreatedByUser(?)}");
+			stm.setInt(1, user.getUserID());
+			
+			ResultSet res = stm.executeQuery();
+			if(res!=null){
+				q = makeQuizObject(res);
+			}
+		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return q;
 	}
 }

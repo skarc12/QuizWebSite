@@ -17,6 +17,7 @@ create table categories(
 	ID int auto_increment not null primary key,
 	type varchar(30)
 );
+
 drop table if exists quizes;
 
 create table quizes(

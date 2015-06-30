@@ -254,11 +254,16 @@ begin
 end@
 
 
-
+drop procedure if exists inserIntoQuiz_take@
 create procedure inserIntoQuiz_take(quizid int, useid int, pnt int, take_time datetime)
 begin
-	insert into quiz_date(quizID,userID,score,take_tike)
-	values(quizid,useid,pnt,take_time);
+	insert into take_quize(quizID, score, take_tike)
+	values(quizid, pnt, take_time);
 end@
 
+
+create procedure getAllQuizesCreatedByUser(id int)
+begin
+	select * from quizes where creatorID = id;
+end@
 
