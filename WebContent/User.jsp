@@ -78,9 +78,12 @@ function search(){
 				QuizHandle[] quizes = DBHelper.getAllQuizes(user);
 				for(int i=0; i<quizes.length; i++){
 				%>
-					<option value="<%=quizes[i].ID %>"><%=quizes[i].name %><input class="ownScore" type="hidden" value="<%=quizes[i].score%>"></option>
-				<%} %>
+					<option value="<%=quizes[i].ID %>"><%=quizes[i].name %></option>
+					
+				
 				</select>
+				<input class="ownScore" type="hidden" value="<%=quizes[i].score%>"/>
+				<%} %>
 				<textarea id="challengeText" rows="3" cols="30"></textarea>
 				<button onclick="SendChalenge()">Send</button>
 			</fieldset>
