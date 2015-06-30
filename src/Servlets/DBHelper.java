@@ -977,4 +977,26 @@ public class DBHelper {
 		User [] answer = new User[users.size()];
 		return users.toArray(answer);
 	}
+	public static void playQuiz(User user, Quiz q, int point, java.sql.Date took_time){
+		Connection con = null;
+		try {
+			con = DBConnection.initConnection();
+			CallableStatement stm = con.prepareCall("{call inserIntoQuiz_take(?,?,?,?)}");
+			stm.setInt(1, user.getUserID());
+			stm.setInt(2, q.getID());
+			stm.setInt(3, point);;
+			stm.setDate(4, took_time);
+			stm.execute();
+
+		} catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
