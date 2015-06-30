@@ -102,11 +102,11 @@ function toggleFriend(e){
 	});
 }
 
-function sendMsg(){
-	var requet = {}
+function SendMsg(){
+	var request = {}
 	request.action = "sendMessage";
 	request.msg = $("#message").val();
-	request.username = $("#username").val();
+	request.username = $("#username").html();
 	$.ajax({
 		url: "userManager",
 		type: "post",
@@ -120,7 +120,7 @@ function sendMsg(){
 function SendChalenge(){
 	var request = {};
 	request.action = "sendChallenge";
-	request.username = $("#username").val();
+	request.username =$("#username").html();
 	request.quizID = $("#challenge").val();
 	request.ownScore = $("#challenge").find(".ownScore").val();
 	request.message = $("#challengeText").val();
