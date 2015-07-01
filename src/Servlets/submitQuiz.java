@@ -2,6 +2,7 @@ package Servlets;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,7 +50,8 @@ public class submitQuiz extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Date date =new Date(new java.util.Date().getTime());
+		long time = System.currentTimeMillis();
+		java.sql.Timestamp timestamp = new java.sql.Timestamp(time);
 
 		User user =(User) request.getSession().getAttribute("user");
 		String json = addQuiz.readAll(request.getInputStream());
@@ -101,7 +103,7 @@ public class submitQuiz extends HttpServlet {
 //				}
 //			}
 //		}
-		DBHelper.playQuiz(user, quiz, correct, date);
+		DBHelper.playQuiz(user, quiz, correct, timestamp);
 		response.getOutputStream().print("{\"value\": \"correct "+correct+"\", \"url\": \"home.jsp\"}");
 		response.getOutputStream().flush();
 	}

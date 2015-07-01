@@ -26,7 +26,7 @@ if(user == null){
 		for(int i=0; i<users.length; i++){
 			%>
 			
-			<p><a href="<&=users[i].getURL() %>"> <%= users[i].getFirstname() + " " + users[i].getLastname() %></a></p>
+			<p><a href="<%=users[i].getURL() %>"> <%= users[i].getFirstname() + " " + users[i].getLastname() %></a></p>
 			
 			
 			<%

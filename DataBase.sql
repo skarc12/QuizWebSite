@@ -165,4 +165,3 @@ create table challenge(
 	foreign key(quizID) references quizes(ID)
 	
 );
-
