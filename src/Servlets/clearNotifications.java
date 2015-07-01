@@ -46,13 +46,21 @@ public class clearNotifications extends HttpServlet {
 				JsonArray arr = obj.get("ids").getAsJsonArray();
 				for(int i=0; i<arr.size(); i++){
 					DBHelper.markMessageAsSeen(arr.get(i).getAsInt());
+					
 				}
 			}
 			case "challenges":{
-				
+				JsonArray arr = obj.get("ids").getAsJsonArray();
+				System.out.println(arr);
+				for(int i=0; i<arr.size(); i++){
+					DBHelper.markChallengeAsSeen(arr.get(i).getAsInt());
+				}
 			}
 			case "friendRequests":{
-				
+				JsonArray arr = obj.get("ids").getAsJsonArray();
+				for(int i=0; i<arr.size(); i++){
+					DBHelper.markRequestAsSeen(arr.get(i).getAsInt());
+				}
 			}
 		}
 	}

@@ -115,7 +115,7 @@ end@
 drop procedure if exists changeSeenInChallenges@
 create procedure changeSeenInChallenges(chID int)
 begin
-	UPDATE challenge SET seen = 1 WHERE ID = chID;
+	UPDATE challenge SET challenge_seen = 1 WHERE ID = chID;
 end@
 
 drop procedure if exists getUnseenFriendRequests@
