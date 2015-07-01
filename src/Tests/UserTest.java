@@ -22,15 +22,16 @@ public class UserTest {
 		DBHelper man = new DBHelper();
 		User sal = man.findUser("salome");
 		ArrayList<User> manFriends = man.getFriends(sal);
-		
+		System.out.println(manFriends.size());
 		assertEquals(manFriends.size(), 0);
 		
 		QuizHandle[] takenRecords = man.getAllQuizes(sal);
+		System.out.println(takenRecords.length);
 		assertEquals(takenRecords.length, 0);
 		
 		Quiz[] q = man.getAllQsCreatedByUser(sal);
-		System.out.println(q.length);
-		assertEquals(q.length, 12);
+		System.out.println("sfafasfads"+q.length);
+		assertEquals(q.length, 22);
 		
 		User tamta = man.findUser("tamta");
 		
