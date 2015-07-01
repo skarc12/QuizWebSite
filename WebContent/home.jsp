@@ -26,6 +26,7 @@ else{
 	<head>
 		<title>Quiz Website</title>
 		<link rel="stylesheet" type="text/css" href="./css/styleHome.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/>
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	</head>
 	<body>

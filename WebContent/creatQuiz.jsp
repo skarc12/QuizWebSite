@@ -15,6 +15,7 @@ if(user == null){
 	<meta charset="ISO-8859-1">
 	<title>Create new Quiz</title>
 	<!-- <link rel="stylesheet" type="text/css" href="./css/styleHome.css"/> -->
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/>
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <%-- <a href="creatQuiz.jsp"><img class = "quiz" src="./img/blaa.png" title="Create New Quiz"></a>
@@ -99,8 +100,8 @@ if(user == null){
 	Choose question category:<BR> 
 	<fieldset>
 	<legend>Quiz</legend>
-		<p>Enter Quiz name <input type="text" id="quizName"></p>
-		<p>Enter Quiz description <textarea id="quizDescription"></textarea></p>
+		<p>Enter Quiz name <input class="form-control" type="text" id="quizName" style="width: 200px;"></p>
+		<p>Enter Quiz description <textarea class="form-control" id="quizDescription" style="width: 200px;"></textarea></p>
 		<!-- <p><input type="checkbox" id="quizRandom"/>Random</p>
 		<p><input type="checkbox" id="quizFeedback"/>Feedback</p>
 		<p><input type="checkbox" id="quizIsOnePage"/>Is One Page</p>  -->
@@ -109,7 +110,7 @@ if(user == null){
 	<fieldset id="questions">
 		<legend>Questions</legend>
 		
-		<button id="addQuestion" onclick="addQuestion()">Add Question</button>
+		<button class="btn btn-primary" id="addQuestion" onclick="addQuestion()">Add Question</button>
 	</fieldset>
 	<button id="addQuiz">Add Quize</button>
 </body>
