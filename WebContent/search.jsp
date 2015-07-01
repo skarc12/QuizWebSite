@@ -19,6 +19,18 @@ if(user == null){
 <title>Search</title>
 </head>
 <body>
+	<a href="creatQuiz.jsp"><img class = "quiz" src="./img/blaa.png" title="Create New Quiz"></a>
+			<hr>
+		<!--<img class="hello" src="./img/gipi.gif">
+		<img class = "mini" src="./img/mini.png">-->
+		<div class = "headerMenu" size = "60">
+			<div class = "search-box">
+
+				<form action="search" method = "GET" id = "search">
+					<input id="searchForm" type = "text" name="q" size="60" placeholder="Search ...">
+				</form>
+			</div>
+		</div>
 	<fieldSet>
 	<p>Find User</p>
 	<%
