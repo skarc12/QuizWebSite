@@ -267,3 +267,4 @@ begin
 	select * from quizes where creatorID = id;
 end@
 
+select * from users;
