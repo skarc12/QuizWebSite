@@ -70,6 +70,7 @@ p{
 	margin-left: 800px;
 }
 .out{
+	position: fixed;
 	margin-left: 960px;
 }
 .user{
