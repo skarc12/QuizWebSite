@@ -21,6 +21,7 @@ else{
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title><%=other==null?"User" : other.getUsername() %></title>
 		<link rel="stylesheet" type="text/css" href="./css/styleHome.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/animate.css"/>
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	</head>
 <body>
@@ -48,14 +49,11 @@ function search(){
 			</div>
 		</div>
 		<div>
+			<img  id="here" src="./img/here.png">
+			<br><br><br><br><br><br>
+			<H3 id  = '1' class = "animated bounceInDown">You can create your own quiz <a href="creatQuiz.jsp"><b>here</a></H3>
 			<img class="hello" src="./img/hello.gif">
 			<img class = "mini" src="./img/mini.png">
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
 			<br>
 			<br>
 			<br>
