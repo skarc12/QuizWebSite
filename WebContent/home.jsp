@@ -53,8 +53,8 @@ else{
 			<%for(int i=0; i<messages.length; i++){ %>
 			<div>
 				<input class="msgID" type="hidden" value="<%=messages[i].getId() %>">
-				<h3><a href="<%=messages[i].getSender().getURL() %>"><%=messages[i].getSender().getFirstname() + " " +messages[i].getSender().getLastname() %></a></h3>
-				<h6><%=messages[i].getMsg() %></h6>
+				<h3>From: <a href="<%=messages[i].getSender().getURL() %>"><%=messages[i].getSender().getFirstname() + " " +messages[i].getSender().getLastname() %></a></h3>
+				<h4 color= blue>Msg: <%=messages[i].getMsg() %></h4>
 			</div>
 			<%} %>
 		</div>
@@ -62,9 +62,9 @@ else{
 			<%for(int i=0; i<challenges.length; i++){ %>
 			<div>
 				<input class="msgIDChallenge" type="hidden" value="<%=challenges[i].getId() %>">
-				<h3><a href="<%=challenges[i].getSender().getURL()%>"><%=challenges[i].getSender().getFirstname() + " " +challenges[i].getSender().getLastname() %></a></h3>
-				<a href="quizPage.jsp?quizID=<%=challenges[i].getQuizid() %>">get Quiz</a>
-				<h3><%=challenges[i].getMsg() %></h3>
+				<h3> From: <a href="<%=challenges[i].getSender().getURL()%>"><%=challenges[i].getSender().getFirstname() + " " +challenges[i].getSender().getLastname() %></a></h3>
+				Quiz: <a href="quizPage.jsp?quizID=<%=challenges[i].getQuizid() %>">get Quiz</a>
+				<h4 color=blue>Msg: <%=challenges[i].getMsg() %></h4>
 			</div>
 			<%} %>
 		</div>
@@ -72,7 +72,8 @@ else{
 			<%for(int i=0; i<friendRequest.length; i++){ %>
 			<div>
 				<input class="msgIDRequest" type="hidden" value="<%=friendRequest[i].getId() %>">
-				<h3><a href="<%=friendRequest[i].getSender().getURL() %>"><%=friendRequest[i].getSender().getFirstname() + " " +friendRequest[i].getSender().getLastname() %></a></h3>
+				<h3><a class = "bolo" href="<%=friendRequest[i].getSender().getURL() %>"><%=friendRequest[i].getSender().getFirstname() + " " +friendRequest[i].getSender().getLastname() %></a> added you into his/her friends.</h3>
+				<h4 color =red>If you don't want to friend this user you can go to his/her profile and unfriend him/her.</h4>
 			</div>
 			<%} %>
 		</div>

@@ -63,6 +63,9 @@ a{
 	text-decoration: none;
 	color: black;
 }
+.bolo{
+	color: red;
+}
 p{
 	position: fixed;
 	font-size: 20px;

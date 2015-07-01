@@ -7,7 +7,9 @@
   vertical-align: baseline;
 }
 
-
+.special{
+	background: url(../img/aa.jpg)
+}
 body {
   line-height: 1;
 }
@@ -159,4 +161,19 @@ input[type=submit]:active {
 }
 img{
 	padding: 0px 75px;
+}
+.search-box{
+	position: absolute;
+	top: 120px;
+	margin-left:90px;
+	margin-right: 245px;
+	width: 700px;
+}
+fieldset{
+	margin-top: 100px;
+	color: red;
+	border:3px dotted;
+	font-family:"Courier New",Courier;
+	width: 500px;
+	font-size: 18px;
 }
