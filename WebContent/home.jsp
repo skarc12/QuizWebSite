@@ -29,13 +29,12 @@ else{
 		<link rel="stylesheet" type="text/css" href="./css/animate.css"/>
 <!-- 		<link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/>
  -->		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		
 	</head>
 	<body>
 		
 		<a href="creatQuiz.jsp"><img class = "quiz" src="./img/blaa.png" title="Create New Quiz"></a>
 			<hr>
-		<!--<img class="hello" src="./img/gipi.gif">
-		<img class = "mini" src="./img/mini.png">-->
 		<div class = "headerMenu" size = "60">
 			<div class = "search-box">
 

@@ -60,6 +60,7 @@
 			</p>
 			<a href="home.jsp"><img class="user" src="./img/user.jpg"></a>
 
+
 		</div>
 	</div>
 	<div>
