@@ -80,10 +80,10 @@ else{
 				<h3 onclick="showMessages()">Unread Messages  <%= messages.length %></h3>
 			</div>
 			<div style="display: inline-block">
-				<h3 onclick="showChallenges()">Unread Challenges  <%= messages.length %></h3>
+				<h3 onclick="showChallenges()">Unread Challenges  <%= challenges.length %></h3>
 			</div>
 			<div style="display: inline-block">
-				<h3 onclick="showFriendRequests()">Unread Friend Requests  <%= messages.length %></h3>
+				<h3 onclick="showFriendRequests()">Unread Friend Requests  <%= friendRequest.length %></h3>
 			</div>
 		
 		</div>
