@@ -991,7 +991,7 @@ public class DBHelper {
 			stm.setInt(1, q.getID());
 			System.out.println("shemovida2");
 			stm.setInt(2, user.getUserID());
-			System.out.println("shemovida3");
+			System.out.println(user.getUserID());
 			
 			System.out.println("shemovida4");
 			stm.setInt(3, point);;
@@ -1036,3 +1036,4 @@ public class DBHelper {
 		return q;
 	}
 }
+

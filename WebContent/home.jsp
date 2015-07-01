@@ -26,8 +26,9 @@ else{
 	<head>
 		<title>Quiz Website</title>
 		<link rel="stylesheet" type="text/css" href="./css/styleHome.css"/>
-		<link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/>
-		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/animate.css"/>
+<!-- 		<link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/>
+ -->		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	</head>
 	<body>
 		
@@ -43,7 +44,7 @@ else{
 				</form>
 				<a href="https://instagram.com/"><img class = "link" src="./img/2.png"></a>
 				<p class="out"><a href="SignOutServlet">Sing Out</a></p>
-				<p><a href="home.jsp"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
+				<p class = "boloshi"><a href="home.jsp"><%=user.getFirstname() %> <%=user.getLastname() %></a></p>
 				<a href="home.jsp"><img class = "user" src="./img/user.jpg"></a>
 				
 			</div>
@@ -79,20 +80,20 @@ else{
 		
 		<div class="notifications">
 			<div style="display: inline-block">
-				<h3 onclick="showMessages()">Unread Messages  <%= messages.length %></h3>
+				<h3 onclick="showMessages()">Messages  <%= messages.length %></h3>
 			</div>
 			<div style="display: inline-block">
-				<h3 onclick="showChallenges()">Unread Challenges  <%= challenges.length %></h3>
+				<h3 onclick="showChallenges()">Challenges  <%= challenges.length %></h3>
 			</div>
 			<div style="display: inline-block">
-				<h3 onclick="showFriendRequests()">Unread Friend Requests  <%= friendRequest.length %></h3>
+				<h3 onclick="showFriendRequests()">Friend Requests  <%= friendRequest.length %></h3>
 			</div>
 		
 		</div>
 			<hr>
 			<div class="Quizes">
 			<fieldset style="display:inline-block">
-			<legend>Most Popular Quizes:</legend>
+			<legend>Popular Quizes:</legend>
 			<%if(popQuizes != null) for(int i=0; i<popQuizes.length; i++){ %>
 				<div><a href="quizPage.jsp?quizID=<%=popQuizes[i].getID() %>"><%=popQuizes[i].getQuizName()%></a></div>
 			<%} %>
@@ -125,8 +126,8 @@ else{
 			<%} %>
 			
 			</fieldset>
-			
 			</div>
+			<img id="minions" class = "animated bounceInUp" src="./img/salo.jpg">
 	</body>
 <%} %>
 

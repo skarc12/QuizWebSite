@@ -23,7 +23,7 @@ begin
 	where a.quizID = b.ID
 	group by a.quizID
 	order by count(a.quizID) desc
-	limit 2;
+	limit 5;
 end@
 
 drop procedure if exists getQuestionIDs@
@@ -92,7 +92,7 @@ begin
 	where a.creatorID = uID
 	and a.ID = b.quizID
 	order by b.take_tike desc
-	limit 2;
+	limit 5;
 
 
 end@
@@ -139,7 +139,7 @@ begin
 	where b.userID = uID
 	and a.ID = b.quizID
 	order by b.take_tike desc
-	limit 2;
+	limit 5;
 end@
 
 drop procedure if exists getAllPlayedQuizes@
@@ -255,16 +255,14 @@ end@
 
 
 drop procedure if exists inserIntoQuiz_take@
-create procedure inserIntoQuiz_take(quizid int, useid int, pnt int, take_time datetime)
+create procedure inserIntoQuiz_take(quizid int, userid int, pnt int, take_time datetime)
 begin
 	insert into take_quize(quizID,userID, score, take_tike)
-	values(quizid,useid, pnt, take_time);
+	values(quizid, userid, pnt, take_time);
 end@
 
-
+drop procedure if exists getAllQuizesCreatedByUser@
 create procedure getAllQuizesCreatedByUser(id int)
 begin
 	select * from quizes where creatorID = id;
 end@
-
-select * from users;
