@@ -16,13 +16,16 @@ if(user == null){
 %>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title><%=quiz.getQuizName() %></title>
+				<link rel="stylesheet" type="text/css" href="./css/Quiz.css"/>
+		
+<!-- 		<link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/>
+ -->		<title><%=quiz.getQuizName() %></title>
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	</head>
 	<body>
-		<h1><%=quiz.getQuizName() %></h1>
-		<h3><%=quiz.getDescription() %></h3>
-		<h5><a href="<%=quiz.getOwnes().getURL()%>"><%=quiz.getOwnes().getUsername() %></a></h5>
+		<h2>Name of Quiz: <%=quiz.getQuizName() %></h2>
+		<h3>Description: <%=quiz.getDescription() %></h3>
+		<h4>Creator: <a href="<%=quiz.getOwnes().getURL()%>"><%=quiz.getOwnes().getUsername() %></a></h4>
 		<%
 			for(int i=0; i<quiz.getQuestions().size(); i++){
 				%>
@@ -69,7 +72,7 @@ if(user == null){
 				<%
 			}
 			%>
-			<button onclick="submitQuiz(this)">OK</button>
+			<button class = "but" onclick="submitQuiz(this)">OK</button>
 	</body>
 	<script>
 	var bla;

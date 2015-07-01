@@ -14,8 +14,10 @@ if(user == null){
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Create new Quiz</title>
+			<link rel="stylesheet" type="text/css" href="./css/Quiz.css"/>
+	
 	<!-- <link rel="stylesheet" type="text/css" href="./css/styleHome.css"/> -->
-	<link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/>
+	<!-- <link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css"/> -->
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <%-- <a href="creatQuiz.jsp"><img class = "quiz" src="./img/blaa.png" title="Create New Quiz"></a>
@@ -45,7 +47,7 @@ if(user == null){
 				<option value="pictureQuestionTemplate">Picture Question</option>
 				<option value="fillTheGapsTemplate">Fill the gaps</option>
 			</select>
-			<button onclick="removeQuestion(this)">Remove</button>
+			<button class = "but" onclick="removeQuestion(this)">Remove</button>
 		</div>
 		<div class="questionBody">
 			<h6>Enter Question</h6>
@@ -112,7 +114,7 @@ if(user == null){
 		
 		<button class="btn btn-primary" id="addQuestion" onclick="addQuestion()">Add Question</button>
 	</fieldset>
-	<button id="addQuiz">Add Quize</button>
+	<button class = "but" id="addQuiz">Add Quize</button>
 </body>
 <script>
 var bla;
