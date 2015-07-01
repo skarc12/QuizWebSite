@@ -25,19 +25,11 @@ else{
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	</head>
 <body>
-<%if(other == null){%>
-	<h1>No Such User: '<%=username %>'</h1>
-<% }else{ %>
-	<a href="creatQuiz.jsp"><img class = "quiz" src="./img/blaa.png" title="Create New Quiz"></a>
-			<hr>
-	
+<a href="creatQuiz.jsp"><img class = "quiz" src="./img/blaa.png" title="Create New Quiz"></a>
+	<hr>
 		<div class = "headerMenu" size = "60">
 			<div class = "search-box">
-<script type="text/javascript">
-function search(){
-	window.location.replace("search.jsp?query="+$("#searchField").val());
-}
-</script>
+
 				<form action="search" method = "GET" id = "search">
 					<input id="searchForm" type = "text" name="q" size="60" placeholder="Search ...">
 				</form>
@@ -138,6 +130,6 @@ function SendChalenge(){
 
 </script>
 
-<%} }%>
+<%} %>
 
 </html>
